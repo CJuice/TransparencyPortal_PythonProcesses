@@ -29,9 +29,7 @@ def main():
     # Budget data
     data_file = r"FilesForWebAppRevisions\drill_down_annotations_operating_Budget20200206Revision.csv"
     output_data_file = r"FilesForWebAppRevisions\drill_down_annotations_operating_Budget20200206Revision_PyTweaked.csv"
-    # pattern = """<h4><b><a href="https://fte.maryland.gov/#!/year/2020/operating/0/agency_name?vis=barChart" target="_blank">Full Time Equivalents:</a> ([0-9.]+)</b></h4>"""
     pattern = """Full Time Equivalents:</a> ([0-9.]+)</b></h4>"""
-    # replacement = """<h4><b><a href="https://fte.maryland.gov/#!/year/2020/operating/0/agency_name?vis=barChart" target="_blank">Full Time Equivalents (FTEs):</a> Click link for data regarding FTE state employee counts for this unit of government.</b></h4>"""
     replacement = """Full Time Equivalents (FTEs):</a> Click link for data regarding FTE state employee counts for this unit of government.</b></h4>"""
 
     # FUNCTIONS
