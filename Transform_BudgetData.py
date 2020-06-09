@@ -48,7 +48,7 @@ def main():
     # Read data file
     orig_df = pd.read_excel(source_data_file)
 
-    # For each of the three FY's, perform the following actions.
+    # For each of the FY's, perform the following actions.
     # Need to create a dataframe for each fiscal year, only including budget data relevant to that year.
     # NOTE: Data provided by the SME included the text "FY " in front of the year value. Integer desired, remove strings
     dataframes_list = []
@@ -65,14 +65,15 @@ def main():
         fy_df.rename(columns={column_name: aggregation_field_name}, inplace=True)
 
         # Need to remove the 'FY ' from the fiscal year values
-        fy_df[fiscal_year_header_str] = fy_df[fiscal_year_header_str].apply(lambda x: int(x.replace(fy_lead_string, "")))
+        fy_df[fiscal_year_header_str] = fy_df[fiscal_year_header_str].apply(
+            lambda x: int(x.replace(fy_lead_string, "")))
 
         # Remnant Note, may be valuable on future rounds
         # fy_df["Type"] = "Budget-[Working/Allowance]"  # Completed in FME, would be either of the terms in brackets []
 
         dataframes_list.append(fy_df)
 
-    # Aggregate the dataframes and concatenate into a single dataframe for output.
+    # Concatenate into a single dataframe for output.
     new_master_df = pd.concat(dataframes_list)
 
     # print out some stats as a sanity check
@@ -91,7 +92,8 @@ def main():
     new_master_df.to_excel(transformed_data_file, index=False)
 
     # CSV OUTPUT
-    # new_master_df.to_csv(path_or_buf=fund_source_data_file_transformed_csv, index=False)
+    # new_master_df.to_csv(path_or_buf=transformed_data_file, index=False)
+    
     print("Process Complete")
     return
 
