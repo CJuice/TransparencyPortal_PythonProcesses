@@ -1,5 +1,9 @@
 """
 TODO: document
+This appears to be a script for filtering the production dataset to only the fiscal years that are not being updated.
+So, if 2025 data was being added and all years prior to that are not to be touched then this script would filter
+for years less than 2025 and dump that data out to a csv.
+
 """
 
 

@@ -1,6 +1,6 @@
 """
 Transform the FTE data from the delivered format to the format expected by the FME process.
-The delivered data contains muttiple columns that must be condensed into a single common column. The three columns
+The delivered data contains multiple columns that must be condensed into a single common column. The three columns
 are FTE counts for different fiscal years. The multiple years must be collapsed into a single column. This
 process makes a dataframe for each of the fiscal year columns. Each dataframe is identical except for the year of
 data that is kept. The other two are dropped. Each new dataframe has new columns added named Count and Fiscal Year.

@@ -1,6 +1,6 @@
 """
 Transform the budget data from the delivered format to the format expected by the FME process.
-The delivered data contains muttiple columns that must be condensed into a single common column. The three columns
+The delivered data contains multiple columns that must be condensed into a single common column. The three columns
 are budget values for different fiscal years. The multiple years must be collapsed into a single column. This
 process makes a dataframe for each of the fiscal year columns. Each dataframe is identical except for the year of
 data that is kept. The other two are dropped. Each new dataframe has a new column added named Budget. This is the
@@ -21,11 +21,11 @@ def main():
     # "Comptroller Subobject Code","Comptroller Subobject Name","Agency Subobject Code",
     # "Agency Subobject Name","Fund Type Name",
     # "FY 2019 Budget Book Actuals","FY 2020 Budget Book Working","FY 2021 Governors Allowance"]
-    
-    common_headers = ["Fiscal Year","Agency Code","Agency Name","Unit Code","Unit Name","Program Code",
-                      "Program Name","Subprogram Code","Subprogram Name","Object Code","Object Name",
-                      "Comptroller Subobject Code","Comptroller Subobject Name","Agency Subobject Code",
-                      "Agency Subobject Name","Fund Type Name"]
+
+    common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
+                      "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
+                      "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
+                      "Agency Subobject Name", "Fund Type Name"]
     fy_19_headers = common_headers + ["FY 2019 Budget Book Actuals"]
     fy_20_headers = common_headers + ["FY 2020 Budget Book Working"]
     fy_21_headers = common_headers + ["FY 2021 Governors Allowance"]
