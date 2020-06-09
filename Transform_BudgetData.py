@@ -23,16 +23,11 @@ def main():
     assert os.path.exists(original_data_files_path)
     assert os.path.exists(transformed_data_files_path)
 
-    # original_headers = ["Fiscal Year","Agency Code","Agency Name","Unit Code","Unit Name","Program Code",
-    # "Program Name","Subprogram Code","Subprogram Name","Object Code","Object Name",
-    # "Comptroller Subobject Code","Comptroller Subobject Name","Agency Subobject Code",
-    # "Agency Subobject Name","Fund Type Name",
-    # "FY 2019 Budget Book Actuals","FY 2020 Budget Book Working","FY 2021 Governors Allowance"]
-
     source_data_file = fr"{original_data_files_path}/FY 2020 and FY 2021 Post Session for Open Data Portal - Exp Data.xlsx"
     assert os.path.exists(source_data_file)
     transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - Budget - Data Only_TRANSFORMED.xlsx"
 
+    # Need to verify these each round of updates to make sure these column headers are in the source data file
     common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
                       "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
                       "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
