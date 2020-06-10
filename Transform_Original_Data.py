@@ -34,7 +34,7 @@ def main():
     #   Only highest True will execute
     budget = False
     funding = False
-    fte = True
+    fte = False
     cur_cr = False
 
     if budget:
@@ -101,9 +101,11 @@ def main():
 
     # For each of the FY's, perform the following actions.
     # Need to create a dataframe for each fiscal year, only including budget data relevant to that year.
-    # NOTE: Data provided by DBM included the text "FY " in front of the year value. Integer desired, remove strings
+    # NOTE: Data provided by DBM included the text "FY " in front of the year value. Integer desired, remove strings.
+    #   FTE data is unique, doesn't contain a Fiscal Year column so creation and assignment must occur
     for fy_str, column_name in fiscal_years_dict.items():
         print(f"\nProcessing {fy_str} column '{column_name}'")
+        fy_focus = int(fy_str.replace(fy_lead_string, ""))
         fy_headers = common_headers + [column_name]
 
         # Need to isolate the columns of interest for the fy of focus. Pass a list of columns to a copy of the orig df
@@ -116,8 +118,10 @@ def main():
         if fte:
 
             # Special handing for FTE because source data does not contain a 'Fiscal Year' column
-            fy_df[fiscal_year_header_str] = int(fy_str.replace(fy_lead_string, ""))
+            fy_df[fiscal_year_header_str] = fy_focus
         else:
+
+            # Could potentially be straight assignment of fy_focus value but seemed safer to work with provided values.
             fy_df[fiscal_year_header_str] = fy_df[fiscal_year_header_str].apply(
                 lambda x: int(x.replace(fy_lead_string, "")))
 
