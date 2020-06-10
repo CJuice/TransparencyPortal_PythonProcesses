@@ -15,11 +15,16 @@ def main():
 
     # IMPORTS
     import pandas as pd
+    import os
 
     # VARIABLES
-    data_file_to_fix_csv = r"C:\Users\Conrad.Schaefer\Documents\DoIT_TransparencyWebsiteDataUpdate\FME_Workbench\TestOutput\budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext.csv"
-    data_file_to_fix_csv_revised = r"C:\Users\Conrad.Schaefer\Documents\DoIT_TransparencyWebsiteDataUpdate\FME_Workbench\TestOutput\budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext_TypeFixed.csv"
-    data_file_to_fix_xlsx = r"C:\Users\Conrad.Schaefer\Documents\DoIT_TransparencyWebsiteDataUpdate\FME_Workbench\TestOutput\budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext.xlsx"
+    # data_file_to_fix_csv = r"..\FME_Workbench\TestOutput\budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext.csv"
+    data_file_to_fix_csv_revised = r"..\FME_Workbench\Test_FMEProcess_Output\20200101_budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext_TypeFixed.csv"
+    data_file_to_fix_xlsx = r"..\FME_Workbench\Test_FMEProcess_Output\20200101_budget_test\budget_test_manuallyeditedtoremoveextracolumns_noFYtext.xlsx"
+    # assert os.path.exists(data_file_to_fix_csv)
+    assert os.path.exists(data_file_to_fix_csv_revised)
+    assert os.path.exists(data_file_to_fix_xlsx)
+
     budget_actual = "Budget - Actual"
     budget_working = "Budget - Working"
     budget_allowance = "Budget - Allowance"
