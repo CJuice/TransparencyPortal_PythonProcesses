@@ -1,7 +1,13 @@
 """
-Main purpose is an emergency fix to populate the Type column in the Budget data. The values for FY that nathan
-gave me were strings, not integers. The FME job was set up to map integers to its values so it failed to populate
-anything for the entire column. Will perform the fix with python.
+Main purpose is an emergency fix to populate the Type column in the Budget data.
+The values for FY that nathan gave me were strings, not integers.
+The FME job was set up to map integers to its values so it failed to populate anything for the entire column.
+The upfront python processes now strip FY from the source data and convert the year to an integer.
+As a result, the FME job should now populate the values. The 20200101 update required an emergency fix
+with this script.
+
+Author: CJuice
+Created: ~20200101
 """
 
 
@@ -17,6 +23,8 @@ def main():
     budget_actual = "Budget - Actual"
     budget_working = "Budget - Working"
     budget_allowance = "Budget - Allowance"
+
+    # NOTE: This dictionary will likely change with each update.
     year_to_value_dict = {2017: budget_actual, 2018: budget_actual, 2019: budget_actual, 2020: budget_working, 2021: budget_allowance}
 
     # FUNCTIONS
