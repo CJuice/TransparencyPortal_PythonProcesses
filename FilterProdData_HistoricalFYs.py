@@ -14,10 +14,15 @@ def main():
     import pandas as pd
 
     # VARIABLES
-    prod_downloaded_data_folder = r"C:\Users\Conrad.Schaefer\Documents\DoIT_TransparencyWebsiteDataUpdate\20200116_ProductionSocrataVersion_Downloads"
-    output_filtered_data_folder = r"C:\Users\Conrad.Schaefer\Documents\DoIT_TransparencyWebsiteDataUpdate\TransparencyPortal_PythonProcesses\FilteredFYProdData_2017_18"
+    _root_proj_path = os.path.dirname(__file__)
+    prod_downloaded_data_folder = r"..\20200601_Update\20200609_ProductionSocrataVersion_Downloads"
+    output_filtered_data_folder = r"..\20200601_Update\20200609_FilteredFYProductionData"
     fiscal_year = "Fiscal Year"
-    max_year_of_historical_fy_data = 2018
+    max_year_of_historical_fy_data = 2019
+
+    # ASSERTS
+    assert os.path.exists(prod_downloaded_data_folder)
+    assert os.path.exists(output_filtered_data_folder)
 
     # FUNCTIONS
 
@@ -26,6 +31,7 @@ def main():
     for directory, sub_folders, files in os.walk(prod_downloaded_data_folder):
         for file in files:
             full_path = os.path.join(directory, file)
+            assert os.path.exists(full_path)
             file_name, extension = file.split(".")
             new_file_name = f"{file_name}_FILTERED_FYs.csv"
             full_path_new = os.path.join(output_filtered_data_folder, new_file_name)
