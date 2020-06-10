@@ -1,12 +1,21 @@
 """
-Transform the budget data from the delivered format to the format expected by the FME process.
-The delivered data contains multiple columns that must be condensed into a single common column. The three columns
-are budget values for different fiscal years. The multiple years must be collapsed into a single column. This
-process makes a dataframe for each of the fiscal year columns. Each dataframe is identical except for the year of
-data that is kept. The other two are dropped. Each new dataframe has a new column added named Budget. This is the
-single column into which each years worth of budget data is collapsed. The multiple data frames are then concatenated
-to gain a single dataframe for output. Pat M., the original staff member to process the data, performed these moves
-manually in excel.
+Transform the finance data from the delivered format to the format expected by the FME process.
+The delivered data contains multiple columns that must be condensed into a single common column. The columns
+to be condensed vary update to update. The multiple columns of FY specific data must be collapsed into a single
+column. This process makes a dataframe for each of the fiscal year columns. Each dataframe is identical
+except for the year of data that is kept. The other two are dropped. Each new dataframe has a new column
+added, which is the aggregation field. This is the single column into which each years worth of data is collapsed.
+The multiple data frames are then concatenated to gain a single dataframe for output.
+Pat M., the original staff member to process the data, performed these moves manually in excel.
+NOTE: There are controlling boolean variables that determine the dataset on which the process operates. This script
+is a tool to be applied to one of the four datasets it was designed to transform. Switch False to True to run on
+a particular dataset and then switch it back after successful completion. Check the column headers match those in the
+data files and change the data files path variables to operate on the most recent data.
+
+Author: CJuice
+Created: ~20200101
+Revisions: 20200601, CJuice, Collapsed the four independent scripts for budget, funding, fte, and cur/cr into a
+    single script.
 """
 
 
