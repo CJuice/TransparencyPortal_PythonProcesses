@@ -34,8 +34,8 @@ def main():
     fiscal_year_header_str = "Fiscal Year"
     fiscal_years_dict = {"FY 2020": "FY 2020 Working", "FY 2021": "FY 2021 Legislative Appropriation"}
     fy_lead_string = "FY "
-    original_data_files_path = r"..\20200601_Update\OriginalData"
-    transformed_data_files_path = r"..\20200601_Update\TransformedData"
+    original_data_files_path = r"..\20200601_Update\20200601_OriginalData"
+    transformed_data_files_path = r"..\20200601_Update\20200609_TransformedData"
     assert os.path.exists(original_data_files_path)
     assert os.path.exists(transformed_data_files_path)
 
