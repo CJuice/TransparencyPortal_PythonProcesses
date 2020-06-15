@@ -13,14 +13,19 @@ def main():
     # IMPORTS
     import pandas as pd
     import os
+    import datetime
 
     # VARIABLES
     _root_project_path = os.path.dirname(__file__)
+    today_str = datetime.datetime.today().strftime("%Y%m%d")
+    print(today_str)
+
     transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - Funding - Data Only_TRANSFORMED.xlsx"
     # state_program_descriptions_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.xlsx"
     state_program_descriptions_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.csv"
     # agency_categories_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.xlsx"
     agency_categories_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.csv"
+    output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_Funding_pythonoutput.csv"
     full_pandas_df_printing = True
 
     # ASSERTS
@@ -98,7 +103,7 @@ def main():
     second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
     print(second_join_df)
 
-
+    second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
     return
 
 
