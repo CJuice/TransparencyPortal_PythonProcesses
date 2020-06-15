@@ -16,6 +16,7 @@ Author: CJuice
 Created: ~20200101
 Revisions: 20200601, CJuice, Collapsed the four independent scripts for budget, funding, fte, and cur/cr into a
     single script.
+    20200615, CJuice, Process was convert "Program Code" from string like number to integer. Revised to include dtypes
 """
 
 
@@ -34,7 +35,7 @@ def main():
     fiscal_year_header_str = "Fiscal Year"
     fiscal_years_dict = {"FY 2020": "FY 2020 Working", "FY 2021": "FY 2021 Legislative Appropriation"}
     fy_lead_string = "FY "
-    original_data_files_path = r"..\20200601_Update\20200601_OriginalData"
+    original_data_files_path = r"..\20200601_Update\20200609_OriginalData"
     transformed_data_files_path = r"..\20200601_Update\20200609_TransformedData"
     assert os.path.exists(original_data_files_path)
     assert os.path.exists(transformed_data_files_path)
@@ -59,6 +60,7 @@ def main():
                           "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
                           "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
                           "Agency Subobject Name", "Fund Type Name"]
+
     elif funding:
 
         # Funding Files
@@ -106,7 +108,11 @@ def main():
     # FUNCTIONALITY
     # Read data file
     print(f"Processing {source_data_file}")
-    orig_df = pd.read_excel(source_data_file)
+    common_column_dtypes_dict = {header: str for header in common_headers}
+    fiscal_year_columns_dtypes_dict = {header: "float" for header in fiscal_years_dict.values()}
+    master_dtypes = {**common_column_dtypes_dict, **fiscal_year_columns_dtypes_dict}
+    orig_df = pd.read_excel(io=source_data_file, dtype=master_dtypes)
+    print(f"Initial data load...\n{orig_df.info()}\n")
 
     # For each of the FY's, perform the following actions.
     # Need to create a dataframe for each fiscal year, only including budget data relevant to that year.
