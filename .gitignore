@@ -6,3 +6,5 @@ FilteredFYProdData_2017_18/
 /FilesForFTEAggregationProcess/
 /FilesForWebAppRevisions/
 .ipynb_checkpoints
+*_pycache_/
+*.pyc
