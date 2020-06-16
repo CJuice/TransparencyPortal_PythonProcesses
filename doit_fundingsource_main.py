@@ -11,31 +11,26 @@ Revisions:
 def main():
 
     # IMPORTS
-    import pandas as pd
-    import os
     import datetime
+    import doit_centralizedvariables as myvars
+    import os
+    import pandas as pd
 
     # VARIABLES
     _root_project_path = os.path.dirname(__file__)
     today_str = datetime.datetime.today().strftime("%Y%m%d")
-    print(today_str)
 
-    transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - Funding - Data Only_TRANSFORMED.xlsx"
-    # state_program_descriptions_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.xlsx"
-    state_program_descriptions_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.csv"
-    # agency_categories_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.xlsx"
-    agency_categories_file = fr"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.csv"
-    output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_Funding_pythonoutput.csv"
+    agency_categories_file = myvars.agency_categories_file
+    data_category = "Funding"
     full_pandas_df_printing = True
+    output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_{data_category}_pythonoutput.csv"
+    state_program_descriptions_file = myvars.state_program_descriptions_file
+    transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - {data_category} - Data Only_TRANSFORMED.xlsx"
 
     # ASSERTS
     assert os.path.exists(transformed_data_file)
     assert os.path.exists(state_program_descriptions_file)
     assert os.path.exists(agency_categories_file)
-
-    # FUNCTIONS
-
-    # CLASSES
 
     # FUNCTIONALITY
 
@@ -58,11 +53,9 @@ def main():
         # pd.set_option('display.max_colwidth', -1)
 
     # Need to control the dtypes to avoid conversion of strings like 'Program Code' to integers (stripping leading zero)
-    column_dtypes = ['Fiscal Year', 'Agency Code', 'Agency Name', 'Unit Code', 'Unit Name',
-                     'Program Code', 'Program Name', 'Fund Type Name', 'Fund Source Code',
-                     'Fund Source Name']
+    column_headers = myvars.funding_common_headers
     budget_dtype = {"Budget": "float"}
-    master_dtypes = {**budget_dtype, **{header: str for header in column_dtypes}}
+    master_dtypes = {**budget_dtype, **{header: str for header in column_headers}}
 
     # Need the data with appropriate dtypes as df
     data_df = pd.read_excel(io=transformed_data_file, dtype=master_dtypes)
