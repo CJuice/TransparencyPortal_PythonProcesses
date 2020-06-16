@@ -23,8 +23,9 @@ Revisions: 20200601, CJuice, Collapsed the four independent scripts for budget, 
 def main():
 
     # IMPORTS
-    import pandas as pd
     import os
+    import pandas as pd
+    import doit_centralizedvariables as myvars
 
     # VARIABLES
     _root_proj_path = os.path.dirname(__file__)
@@ -56,11 +57,7 @@ def main():
         transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
-        common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
-                          "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
-                          "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
-                          "Agency Subobject Name", "Fund Type Name"]
-
+        common_headers = myvars.budget_common_headers
     elif funding:
 
         # Funding Files
@@ -70,9 +67,7 @@ def main():
         transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
-        common_headers = ['Fiscal Year', 'Agency Code', 'Agency Name', 'Unit Code', 'Unit Name',
-                          'Program Code', 'Program Name', 'Fund Type Name', 'Fund Source Code',
-                          'Fund Source Name']
+        common_headers = myvars.funding_common_headers
     elif fte:
 
         # FTE Files - The source file does not contain a 'Fiscal Year' field
@@ -83,7 +78,7 @@ def main():
         transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
-        common_headers = ["Agency Code", "Unit Code", "Program Code"]
+        common_headers = myvars.fte_common_headers
     elif cur_cr:
 
         # CUR/CR Files
@@ -92,12 +87,9 @@ def main():
         transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
-        common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
-                          "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
-                          "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
-                          "Agency Subobject Name", "Fund Type Name"]
+        common_headers = myvars.cur_cr_common_headers
     else:
-        column_headers = None
+        common_headers = None
         source_data_file = None
         transformed_data_file = None
         print("All categories are False. Exiting")
