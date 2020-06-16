@@ -60,6 +60,10 @@ def main():
     data_df["Organization Code"] = data_df.apply(
         lambda row: str(f"{row['Agency Code']}_{row['Unit Code']}_{row['Program Code']}"), axis=1)
 
+    # NOTE: The Description field from the State Programs is a hidden field in the final product on open data portal.
+    #   The State Program Descriptions file does not seem to need to be joined at all. To stay consistent with prior
+    #   process it will be included in this py version too.
+
     # Need to create the Organization Code column and populate in the State Programs Descriptions dataframe
     state_programs_df["Organization Code"] = state_programs_df.apply(
         lambda row: str(f"{row['AgencyCode']}_{row['UnitCode']}_{row['ProgramCode']}"), axis=1)
