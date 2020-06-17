@@ -22,18 +22,20 @@ def main():
     full_pandas_df_printing = True
 
     # TODO: WIth some forethought on naming conventions for outputs a hard coded mapping could be abandoned.
-    historical_to_update_files_mapping = {"Maryland_Operating_Budget__CUR_and_CR_FILTERED_FYs.csv": "20200616_CUR-CR_pythonoutput.csv",
-                                       "Maryland_Operating_Budget_-_Funding_Source_FILTERED_FYs.csv": "20200615_Funding_pythonoutput.csv",
-                                       "Maryland_Operating_Budget_FILTERED_FYs.csv": "20200616_Budget_pythonoutput.csv",
-                                       "State_of_Maryland_Full_Time_Equivalents_FILTERED_FYs.csv": "20200617_FTE_pythonoutput.csv"}
-    historical_to_update_paths_mapping = {os.path.join(historical_data_folder, key): os.path.join(updates_data_folder, value) for key, value in historical_to_update_files_mapping.items()}
+    historical_to_update_files_mapping = {"CUR_CR": ("Maryland_Operating_Budget__CUR_and_CR_FILTERED_FYs.csv", "20200617_CUR-CR_pythonoutput.csv"),
+                                       "Funding": ("Maryland_Operating_Budget_-_Funding_Source_FILTERED_FYs.csv", "20200615_Funding_pythonoutput.csv"),
+                                       "Budget": ("Maryland_Operating_Budget_FILTERED_FYs.csv", "20200616_Budget_pythonoutput.csv"),
+                                       "FTE": ("State_of_Maryland_Full_Time_Equivalents_FILTERED_FYs.csv", "20200617_FTE_pythonoutput.csv")}
+    historical_to_update_paths_mapping = {style: (os.path.join(historical_data_folder, values[0]), os.path.join(updates_data_folder, values[1])) for style, values in historical_to_update_files_mapping.items()}
+    print(historical_to_update_paths_mapping)
 
     # ASSERTS
     assert os.path.exists(historical_data_folder)
     assert os.path.exists(updates_data_folder)
     for key, value in historical_to_update_paths_mapping.items():
-        assert os.path.exists(key)
-        assert os.path.exists(value)
+        historical, update = value
+        assert os.path.exists(historical)
+        assert os.path.exists(update)
 
     # FUNCTIONS
 
@@ -46,6 +48,15 @@ def main():
         pd.set_option('display.width', None)
         # pd.set_option('display.max_colwidth', -1)
 
+    for style, paths_tup in historical_to_update_paths_mapping.items():
+        historical, update = paths_tup
+        hist_df = pd.read_csv(historical)
+        update_df = pd.read_csv(update)
+        print(f"\n{style}")
+        print("\tHistorical")
+        hist_df.info()
+        print("\tUpdate")
+        update_df.info()
 
     return
 
