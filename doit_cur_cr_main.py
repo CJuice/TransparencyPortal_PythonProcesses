@@ -62,28 +62,32 @@ def main():
 
     # NOTE: The Description field from the State Programs is a hidden field in the final product on open data portal.
     #   The State Program Descriptions file does not seem to need to be joined at all. To stay consistent with prior
-    #   process it will be included in this py version too.
+    #   process it will be included in this py version too, but commented out. When update data is to be concatenated
+    #   with historical data downloaded from Open Data Portal the Description field is not present in historical.
 
     # Need to create the Organization Code column and populate in the State Programs Descriptions dataframe
-    state_programs_df["Organization Code"] = state_programs_df.apply(
-        lambda row: str(f"{row['AgencyCode']}_{row['UnitCode']}_{row['ProgramCode']}"), axis=1)
+    # state_programs_df["Organization Code"] = state_programs_df.apply(
+    #     lambda row: str(f"{row['AgencyCode']}_{row['UnitCode']}_{row['ProgramCode']}"), axis=1)
 
-    # Only need the 'Description' field joined to data table, drop all others
-    org_code_parts = ["AgencyCode", "AgencyName", "UnitCode", "UnitName", "ProgramCode", "ProgramName"]
-    state_programs_df.drop(columns=org_code_parts, inplace=True)
+    # # Only need the 'Description' field joined to data table, drop all others
+    # org_code_parts = ["AgencyCode", "AgencyName", "UnitCode", "UnitName", "ProgramCode", "ProgramName", "Description"]
+    # state_programs_df.drop(columns=org_code_parts, inplace=True)
 
     # Need to join the state programs data to the data_df on Organization Code using left join
     # data_df.set_index(keys="Organization Code", inplace=True, drop=True)
-    state_programs_df.set_index(keys="Organization Code", inplace=True, drop=True)
+    # state_programs_df.set_index(keys="Organization Code", inplace=True, drop=True)
 
-    first_join_df = data_df.join(other=state_programs_df, on="Organization Code")
-    print(first_join_df)
+    # first_join_df = data_df.join(other=state_programs_df, on="Organization Code")
+    # print(first_join_df)
 
     # Need to join the agency categories data to the first join df on Agency Code using left join
     agency_categories_drop = ["Agency Name"]
     agency_categories_df.drop(columns=agency_categories_drop, inplace=True)
     agency_categories_df.set_index(keys="Agency Code", drop=True, inplace=True)
-    second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
+
+    # Without the second join, this step could be omitted and replaced by a direct join to data_df
+    # second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
+    second_join_df = data_df.join(other=agency_categories_df, on="Agency Code")
     print(second_join_df)
 
     second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
