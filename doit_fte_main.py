@@ -50,40 +50,30 @@ def main():
     # CSV versions - This method does not convert '05' into an integer but leaves it as string, without using dtypes
     #   In addition, could provide encoding to bypass issue with bytes
     state_programs_df = pd.read_csv(filepath_or_buffer=state_program_descriptions_file, encoding="Windows-1252")
-    agency_categories_df = pd.read_csv(filepath_or_buffer=agency_categories_file)
 
     # Need to create the Organization Code column and populate in the data dataframe
     data_df["Organization Code"] = data_df.apply(
         lambda row: str(f"{row['Agency Code']}_{row['Unit Code']}_{row['Program Code']}"), axis=1)
-    print(data_df.info())
-    exit()
-
-
+    data_df.info()
 
     # Need to create the Organization Code column and populate in the State Programs Descriptions dataframe
     state_programs_df["Organization Code"] = state_programs_df.apply(
         lambda row: str(f"{row['AgencyCode']}_{row['UnitCode']}_{row['ProgramCode']}"), axis=1)
 
-    # Only need the 'Description' field joined to data table, drop all others
-    org_code_parts = ["AgencyCode", "UnitCode", "ProgramCode", "AgencyName", "UnitName", "ProgramName"]
+    # Only need the 'AgencyName', 'UnitName', 'ProgramName' fields joined to data table, drop all others
+    org_code_parts = ["AgencyCode", "UnitCode", "ProgramCode", "Description"]
     state_programs_df.drop(columns=org_code_parts, inplace=True)
 
     # Need to join the state programs data to the data_df on Organization Code using left join
-    # data_df.set_index(keys="Organization Code", inplace=True, drop=True)
     state_programs_df.set_index(keys="Organization Code", inplace=True, drop=True)
-
     first_join_df = data_df.join(other=state_programs_df, on="Organization Code")
-    print(first_join_df)
 
-    # Need to join the agency categories data to the first join df on Agency Code using left join
+    # Need to rename certain columns, from state program descriptions file, to match schema expected in website
+    rename_stateprog_names = {"AgencyName": "Agency Name", "UnitName": "Unit Name", "ProgramName": "Program Name"}
+    first_join_df.rename(columns=rename_stateprog_names, inplace=True)
     first_join_df.info()
-    agency_categories_drop = ["Agency Name"]
-    agency_categories_df.drop(columns=agency_categories_drop, inplace=True)
-    agency_categories_df.set_index(keys="Agency Code", drop=True, inplace=True)
-    second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
-    print(second_join_df)
 
-    second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
+    first_join_df.to_csv(path_or_buf=output_result_csv, index=False)
     return
 
 
