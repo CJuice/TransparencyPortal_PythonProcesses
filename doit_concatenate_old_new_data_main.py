@@ -19,6 +19,7 @@ def main():
     today_str = datetime.datetime.today().strftime("%Y%m%d")
     historical_data_folder = r"..\20200601_Update\20200609_FilteredFYProductionData"
     updates_data_folder = r"..\20200601_Update\20200615_PythonResults"
+    concatenated_data_folder = r"..\20200601_Update\20200617_ConcatenatedDataProduct"
     full_pandas_df_printing = True
 
     # TODO: WIth some forethought on naming conventions for outputs a hard coded mapping could be abandoned.
@@ -32,6 +33,7 @@ def main():
     # ASSERTS
     assert os.path.exists(historical_data_folder)
     assert os.path.exists(updates_data_folder)
+    assert os.path.exists(concatenated_data_folder)
     for key, value in historical_to_update_paths_mapping.items():
         historical, update = value
         assert os.path.exists(historical)
@@ -50,13 +52,17 @@ def main():
 
     for style, paths_tup in historical_to_update_paths_mapping.items():
         historical, update = paths_tup
-        hist_df = pd.read_csv(historical)
-        update_df = pd.read_csv(update)
+        new_concatenated_file = os.path.join(concatenated_data_folder, f"{today_str}_UPDATED_{style}.csv")
+        hist_df = pd.read_csv(historical, low_memory=False)
+        update_df = pd.read_csv(update, low_memory=False)
         print(f"\n{style}")
         print("\tHistorical")
         hist_df.info()
         print("\tUpdate")
         update_df.info()
+        new_df = pd.concat(objs=[hist_df, update_df], ignore_index=True, sort=True, copy=False)
+        new_df.info()
+        new_df.to_csv(path_or_buf=new_concatenated_file, index=False)
 
     return
 
