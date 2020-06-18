@@ -1,5 +1,5 @@
 """
-TODO
+Process the update data for CUR/CR and output the processed data to csv.
 Replaces FME process for CUR/CR data.
 
 Author: CJuice
@@ -20,7 +20,11 @@ def main():
     _root_project_path = os.path.dirname(__file__)
     today_str = datetime.datetime.today().strftime("%Y%m%d")
 
+    agency_categories_drop = ["Agency Name"]
     agency_categories_file = myvars.agency_categories_file
+    agency_code_str = "Agency Code"
+    budget_dtype = {"Budget": "float"}
+    column_headers = myvars.cur_cr_common_headers
     data_category = "CUR-CR"
     full_pandas_df_printing = True
     output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_{data_category}_pythonoutput.csv"
@@ -28,9 +32,9 @@ def main():
     transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - {data_category} - Data Only_TRANSFORMED.xlsx"
 
     # ASSERTS
-    assert os.path.exists(transformed_data_file)
-    assert os.path.exists(state_program_descriptions_file)
     assert os.path.exists(agency_categories_file)
+    assert os.path.exists(state_program_descriptions_file)
+    assert os.path.exists(transformed_data_file)
 
     # FUNCTIONALITY
     if full_pandas_df_printing:
@@ -40,8 +44,6 @@ def main():
         # pd.set_option('display.max_colwidth', -1)
 
     # Need to control the dtypes to avoid conversion of strings like 'Program Code' to integers (stripping leading zero)
-    column_headers = myvars.cur_cr_common_headers
-    budget_dtype = {"Budget": "float"}
     master_dtypes = {**budget_dtype, **{header: str for header in column_headers}}
 
     # Need the data with appropriate dtypes as df
@@ -53,7 +55,7 @@ def main():
 
     # CSV versions - This method does not convert '05' into an integer but leaves it as string, without using dtypes
     #   In addition, could provide encoding to bypass issue with bytes
-    state_programs_df = pd.read_csv(filepath_or_buffer=state_program_descriptions_file, encoding="Windows-1252")
+    # state_programs_df = pd.read_csv(filepath_or_buffer=state_program_descriptions_file, encoding="Windows-1252")
     agency_categories_df = pd.read_csv(filepath_or_buffer=agency_categories_file)
 
     # Need to create the Organization Code column and populate in the data dataframe
@@ -81,13 +83,12 @@ def main():
     # print(first_join_df)
 
     # Need to join the agency categories data to the first join df on Agency Code using left join
-    agency_categories_drop = ["Agency Name"]
     agency_categories_df.drop(columns=agency_categories_drop, inplace=True)
-    agency_categories_df.set_index(keys="Agency Code", drop=True, inplace=True)
+    agency_categories_df.set_index(keys=agency_code_str, drop=True, inplace=True)
 
     # Without the second join, this step could be omitted and replaced by a direct join to data_df
     # second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
-    second_join_df = data_df.join(other=agency_categories_df, on="Agency Code")
+    second_join_df = data_df.join(other=agency_categories_df, on=agency_code_str)
     print(second_join_df)
 
     second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
