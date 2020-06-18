@@ -1,5 +1,8 @@
 """
-TODO
+Concatenate the processed update data files with their matching historical data files and output to csv.
+Iterate over the pairs of update data and corresponding historical data, concatenate them into a single resource,
+and write that resource to csv for upload to open data platform as staging assets.
+
 Author: CJuice
 Created: 20200617
 Revisions:
@@ -10,7 +13,6 @@ def main():
 
     # IMPORTS
     import datetime
-    import doit_centralizedvariables as myvars
     import os
     import pandas as pd
 
@@ -39,10 +41,6 @@ def main():
         assert os.path.exists(historical)
         assert os.path.exists(update)
 
-    # FUNCTIONS
-
-    # CLASSES
-
     # FUNCTIONALITY
     if full_pandas_df_printing:
         # pd.set_option('display.max_rows', None)
@@ -55,11 +53,8 @@ def main():
         new_concatenated_file = os.path.join(concatenated_data_folder, f"{today_str}_UPDATED_{style}.csv")
         hist_df = pd.read_csv(historical, low_memory=False)
         update_df = pd.read_csv(update, low_memory=False)
-        print(f"\n{style}")
-        print("\tHistorical")
-        hist_df.info()
-        print("\tUpdate")
-        update_df.info()
+        print(f"\n{style}\n\tHistorical\n{hist_df.info()}")
+        print(f"\tUpdate\n{update_df.info()}")
         new_df = pd.concat(objs=[hist_df, update_df], ignore_index=True, sort=True, copy=False)
         new_df.info()
         new_df.to_csv(path_or_buf=new_concatenated_file, index=False)
