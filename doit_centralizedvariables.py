@@ -2,8 +2,34 @@
 TODO
 """
 
-agency_categories_file = r"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.csv"
-state_program_descriptions_file = r"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.csv"
+##########
+# Will/May change with each update
+root_update_folder_path = r"..\20210111_Budget_Update"
+budget_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Expenditure Data.xlsx"
+cur_cr_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Higher Ed Exp Data.xlsx"
+fte_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - FTE Data.xlsx"
+funds_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Funds Data Only.xlsx"
+first, second, third = (2020, 2021, 2022)
+
+#   Dependent
+official_data_folder = f"{root_update_folder_path}/OfficialData"
+transformed_data_folder = f"{root_update_folder_path}/TransformedData"
+python_results_folder = f"{root_update_folder_path}/PythonResults"
+extra_required_files = f"{official_data_folder}/ExtraRequiredFiles"
+first_header = f"FY {first} Budget Book Actuals"
+second_header = f"FY {second} Budget Book Working"
+third_header = f"FY {third} Governors Allowance"
+fiscal_years_dict = {f"FY {first}": first_header, f"FY {second}": second_header, f"FY {third}": third_header}
+
+# Excel versions have presented encoding issues in past. Fall back is to use csv versions
+agency_categories_file = fr"{extra_required_files}/AgencyCategories_CJuiceCleaned.xlsx"
+state_program_descriptions_file = fr"{extra_required_files}/StateProgramDescriptions.xlsx"
+# agency_categories_file = fr"{extra_required_files}/AgencyCategories_CJuiceCleaned.csv"
+# state_program_descriptions_file = fr"{extra_required_files}/StateProgramDescriptions.csv"
+##########
+
+
+
 budget_common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
                          "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
                          "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
