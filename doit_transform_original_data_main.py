@@ -68,7 +68,7 @@ def main():
 
     # CONTROL: Toggle data type of focus. Process is same for each but headers vary. The headers must be verified first!
     #   Only highest True will execute
-    budget = True
+    budget = False
     funding = False
     fte = False
     cur_cr = False
