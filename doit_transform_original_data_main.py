@@ -28,22 +28,47 @@ def main():
     import doit_centralizedvariables as myvars
 
     # VARIABLES
-    _root_proj_path = os.path.dirname(__file__)
+    # _root_proj_path = os.path.dirname(__file__)
+    ##########
+    # Will change with each update
+    _root_update_folder_path = r"..\20210111_Budget_Update"
+    budget_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Expenditure Data.xlsx"
+    fte_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - FTE Data.xlsx"
+    funds_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Funds Data Only.xlsx"
+    cur_cr_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Higher Ed Exp Data.xlsx"
+    official_data_folder = f"{_root_update_folder_path}\OfficialData"
+    transformed_data_folder = f"{_root_update_folder_path}\TransformedData"
+    # source_budget_data_file = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Expenditure Data.xlsx"
+    # transformed_budget_data_file = source_budget_data_file.replace(".xlsx", "_TRANSFORMED.xlsx")
+    # source_data_file = f"{official_data_folder}/{source_budget_data_file}"
+    # source_data_file_transformed_xlsx = f"{transformed_data_folder}/{transformed_budget_data_file}"
+    first, second, third = (2020, 2021, 2022)
+    first_header = f"FY {first} Budget Book Actuals"
+    second_header = f"FY {second} Budget Book Working"
+    third_header = f"FY {third} Governors Allowance"
+
+    ##########
+
     aggregation_field_name = "Budget"
     csv_out = False
     dataframes_list = []
     excel_out = True
     fiscal_year_header_str = "Fiscal Year"
-    fiscal_years_dict = {"FY 2020": "FY 2020 Working", "FY 2021": "FY 2021 Legislative Appropriation"}
+    fiscal_years_dict = {f"FY {first}": first_header, f"FY {second}": second_header, f"FY {third}": third_header}
     fy_lead_string = "FY "
-    original_data_files_path = r"..\20200601_Update\20200609_OriginalData"
-    transformed_data_files_path = r"..\20200601_Update\20200609_TransformedData"
-    assert os.path.exists(original_data_files_path)
-    assert os.path.exists(transformed_data_files_path)
+    assert os.path.exists(official_data_folder)
+    assert os.path.exists(transformed_data_folder)
+
+    # FUNCTIONS
+    def name_transformed(filename: str) -> str:
+        excel_ending = ".xlsx"
+        return filename.replace(excel_ending, f"_TRANSFORMED{excel_ending}")
+
+    # FUNCTIONALITY
 
     # CONTROL: Toggle data type of focus. Process is same for each but headers vary. The headers must be verified first!
     #   Only highest True will execute
-    budget = False
+    budget = True
     funding = False
     fte = False
     cur_cr = False
@@ -51,40 +76,40 @@ def main():
     if budget:
 
         # Budget Files
-        source_data_file = fr"{original_data_files_path}/FY 2020 and FY 2021 Post Session for Open Data Portal - Exp Data.xlsx"
+        source_data_file = fr"{official_data_folder}/{budget_source_filename}"
         assert os.path.exists(source_data_file)
-        data_type = "Budget"
-        transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
+        # data_type = "Budget"
+        transformed_data_file = fr"{transformed_data_folder}/{name_transformed(budget_source_filename)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.budget_common_headers
     elif funding:
 
         # Funding Files
-        source_data_file = fr"{original_data_files_path}/FY 2020 and FY 2021 Post Session for Open Data Portal - Funds Data.xlsx"
+        source_data_file = fr"{official_data_folder}/{funds_source_filename}"
         assert os.path.exists(source_data_file)
-        data_type = "Funding"
-        transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
+        # data_type = "Funding"
+        transformed_data_file = fr"{transformed_data_folder}/{name_transformed(funds_source_filename)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.funding_common_headers
     elif fte:
 
         # FTE Files - The source file does not contain a 'Fiscal Year' field
-        source_data_file = fr"{original_data_files_path}/FY 2020 and FY 2021 Post Session for Open Data Portal - FTE Data.xlsx"
+        source_data_file = fr"{official_data_folder}/{fte_source_filename}"
         assert os.path.exists(source_data_file)
         data_type = "FTE"
         aggregation_field_name = "Count"  # UNIQUE
-        transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
+        transformed_data_file = fr"{transformed_data_folder}/{name_transformed(fte_source_filename)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.fte_common_headers
     elif cur_cr:
 
         # CUR/CR Files
-        source_data_file = fr"{original_data_files_path}/FY 2020 and FY 2021 Post Session for Open Data Portal - Exp Higher Ed Data.xlsx"
+        source_data_file = fr"{official_data_folder}/{cur_cr_source_filename}"
         data_type = "CUR-CR"
-        transformed_data_file = fr"{transformed_data_files_path}/FY2020through2021 - {data_type} - Data Only_TRANSFORMED.xlsx"
+        transformed_data_file = fr"{transformed_data_folder}/{name_transformed(cur_cr_source_filename)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.cur_cr_common_headers
@@ -97,7 +122,6 @@ def main():
 
     assert os.path.exists(source_data_file)
 
-    # FUNCTIONALITY
     # Read data file
     print(f"Processing {source_data_file}")
     common_column_dtypes_dict = {header: str for header in common_headers}
@@ -156,10 +180,12 @@ def main():
 
     # EXCEL OUTPUT
     if excel_out:
+        print("Outputing to Excel...")
         new_master_df.to_excel(transformed_data_file, index=False)
 
     # CSV OUTPUT
     if csv_out:
+        print("Outputing to CSV...")
         new_master_df.to_csv(path_or_buf=transformed_data_file, index=False)
 
     print("Process Complete")
