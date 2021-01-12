@@ -3,6 +3,7 @@ TODO
 """
 
 agency_categories_file = r"../20200601_Update/20200609_ExtraRequiredFiles/20200127_AgencyCategories_CJuiceCleaned.csv"
+state_program_descriptions_file = r"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.csv"
 budget_common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
                          "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
                          "Comptroller Subobject Code", "Comptroller Subobject Name", "Agency Subobject Code",
@@ -15,7 +16,6 @@ fte_common_headers = ["Agency Code", "Unit Code", "Program Code"]
 funding_common_headers = ['Fiscal Year', 'Agency Code', 'Agency Name', 'Unit Code', 'Unit Name',
                           'Program Code', 'Program Name', 'Fund Type Name', 'Fund Source Code',
                           'Fund Source Name']
-state_program_descriptions_file = r"../20200601_Update/20200609_ExtraRequiredFiles/20200127_StateProgramDescriptions.csv"
 
 # The following three dicts, pulled from the fme job as hard coded value mappers, can be live generated
 #   from the state program descriptions file. Performed this through a join, rather than dict build.
