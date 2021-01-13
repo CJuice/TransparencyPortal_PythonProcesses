@@ -43,7 +43,12 @@
         source data file schema from year to year. Expect to make tweaks!
         * Toggle the boolean controls on the dataset of focus.
         * Process outputs to the TransformedData folder
-### Step 4 -  
+### Step 4 - Process Transformed Datasets
+* Script - doit_operatingBudget_main.py
+* Script - doit_fundingsource_main.py
+* Script - doit_fte_main.py
+* Script - doit_cur_cr_main.py
+### Step 5 - Upload Processed Datasets to Open Data Portal as Development Assets for DBM SME Review
 * 
 ## Notes on the Extra Required Files
 ### State Program Descriptions & Agency Categories
