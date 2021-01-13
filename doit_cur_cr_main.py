@@ -5,6 +5,8 @@ Replaces FME process for CUR/CR data.
 Author: CJuice
 Created: 20200616
 Revisions:
+    20210112, CJuice, Refactored to use more centralized variables. Added print statements for insights.
+
 """
 
 
@@ -17,23 +19,20 @@ def main():
     import pandas as pd
 
     # VARIABLES
-    _root_project_path = os.path.dirname(__file__)
     today_str = datetime.datetime.today().strftime("%Y%m%d")
-
-    agency_categories_drop = ["Agency Name"]
-    agency_categories_file = myvars.agency_categories_file
     agency_code_str = "Agency Code"
-    budget_dtype = {"Budget": "float"}
+    budget_column_dtype = {"Budget": "float"}
     column_headers = myvars.cur_cr_common_headers
     data_category = "CUR-CR"
+    agency_categories_drop = ["Agency Name"]
     full_pandas_df_printing = True
-    output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_{data_category}_pythonoutput.csv"
-    state_program_descriptions_file = myvars.state_program_descriptions_file
-    transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - {data_category} - Data Only_TRANSFORMED.xlsx"
+    org_code_str = "Organization Code"
+    output_result_csv = fr"{myvars.python_results_folder}/{today_str}_{data_category}_pythonoutput.csv"
+    transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # ASSERTS
-    assert os.path.exists(agency_categories_file)
-    assert os.path.exists(state_program_descriptions_file)
+    assert os.path.exists(myvars.agency_categories_file)
+    assert os.path.exists(myvars.state_program_descriptions_file)
     assert os.path.exists(transformed_data_file)
 
     # FUNCTIONALITY
@@ -44,22 +43,22 @@ def main():
         # pd.set_option('display.max_colwidth', -1)
 
     # Need to control the dtypes to avoid conversion of strings like 'Program Code' to integers (stripping leading zero)
-    master_dtypes = {**budget_dtype, **{header: str for header in column_headers}}
+    master_dtypes = {**budget_column_dtype, **{header: str for header in column_headers}}
 
     # Need the data with appropriate dtypes as df
     data_df = pd.read_excel(io=transformed_data_file, dtype=master_dtypes)
+    print(f"Transformed Data: \n{data_df.info()}")
 
-    # Excel versions - Won't work do to encoding issue
-    # state_programs_df = pd.read_excel(io=state_program_descriptions_file)
-    # agency_categories_df = pd.read_excel(io=agency_categories_file)
+    # Excel versions - Sometimes doesn't work do to encoding issue. Fallback to csv's in that situation.
+    agency_categories_df = pd.read_excel(io=myvars.agency_categories_file)
+    print(f"Agency Categories: \n{agency_categories_df.info()}")
 
     # CSV versions - This method does not convert '05' into an integer but leaves it as string, without using dtypes
     #   In addition, could provide encoding to bypass issue with bytes
-    # state_programs_df = pd.read_csv(filepath_or_buffer=state_program_descriptions_file, encoding="Windows-1252")
-    agency_categories_df = pd.read_csv(filepath_or_buffer=agency_categories_file)
+    # agency_categories_df = pd.read_csv(filepath_or_buffer=myvars.agency_categories_file)
 
     # Need to create the Organization Code column and populate in the data dataframe
-    data_df["Organization Code"] = data_df.apply(
+    data_df[org_code_str] = data_df.apply(
         lambda row: str(f"{row['Agency Code']}_{row['Unit Code']}_{row['Program Code']}"), axis=1)
 
     # NOTE: The Description field from the State Programs is a hidden field in the final product on open data portal.
@@ -89,8 +88,11 @@ def main():
     # Without the second join, this step could be omitted and replaced by a direct join to data_df
     # second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
     second_join_df = data_df.join(other=agency_categories_df, on=agency_code_str)
-    print(second_join_df)
+    print(f"Second Join:")
+    # print(second_join_df)
+    second_join_df.info()
 
+    print("Outputting CSV...")
     second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
     return
 

@@ -5,6 +5,7 @@ Replaces FME process for Operating Budget data.
 Author: CJuice
 Created: 20200616
 Revisions:
+    20210112, CJuice, Refactored to use more centralized variables. Added print statements for insights.
 """
 
 
@@ -17,9 +18,9 @@ def main():
     import pandas as pd
 
     # VARIABLES
-
     today_str = datetime.datetime.today().strftime("%Y%m%d")
-
+    agency_categories_drop = ["Agency Name"]
+    agency_code_str = "Agency Code"
     budget_actual = "Budget - Actual"
     budget_appropriation = "Budget - Appropriation"
     budget_column_dtype = {"Budget": "float"}
@@ -37,8 +38,8 @@ def main():
     transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # For TESTING, smaller file size for faster testing/processing
-    transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED_SLIM.xlsx"
-    print(f"Using SLIM data file. {transformed_data_file}")
+    # transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED_SLIM.xlsx"
+    # print(f"Using SLIM data file. {transformed_data_file}")
 
     # ASSERTS
     assert os.path.exists(myvars.agency_categories_file)
@@ -90,23 +91,21 @@ def main():
     state_programs_df.drop(columns=drop_fields, inplace=True)
 
     # Need to join the state programs data to the data_df on Organization Code using left join
-    # data_df.set_index(keys="Organization Code", inplace=True, drop=True)
     state_programs_df.set_index(keys=org_code_str, inplace=True, drop=True)
-
     first_join_df = data_df.join(other=state_programs_df, on=org_code_str)
     print(f"First Join:")
     # print(first_join_df)
     first_join_df.info()
 
     # Need to join the agency categories data to the first join df on Agency Code using left join
-    agency_categories_drop = ["Agency Name"]
     agency_categories_df.drop(columns=agency_categories_drop, inplace=True)
-    agency_categories_df.set_index(keys="Agency Code", drop=True, inplace=True)
-    second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
+    agency_categories_df.set_index(keys=agency_code_str, drop=True, inplace=True)
+    second_join_df = first_join_df.join(other=agency_categories_df, on=agency_code_str)
     print(f"Second Join:")
     # print(second_join_df)
     second_join_df.info()
 
+    print("Outputting CSV...")
     second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
     return
 

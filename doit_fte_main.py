@@ -5,6 +5,8 @@ Replaces FME process for FTE data.
 Author: CJuice
 Created: 20200612
 Revisions:
+    20210112, CJuice, Refactored to use more centralized variables. Added print statements for insights.
+
 """
 
 
@@ -17,24 +19,20 @@ def main():
     import pandas as pd
 
     # VARIABLES
-    _root_project_path = os.path.dirname(__file__)
     today_str = datetime.datetime.today().strftime("%Y%m%d")
-
-    agency_categories_file = myvars.agency_categories_file
-    budget_dtype = {"Budget": "float"}
+    budget_column_dtype = {"Budget": "float"}
     column_headers = myvars.funding_common_headers
     data_category = "FTE"
+    drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "Description"]
     full_pandas_df_printing = True
-    org_code_parts = ["AgencyCode", "UnitCode", "ProgramCode", "Description"]
     org_code_str = "Organization Code"
-    output_result_csv = fr"../20200601_Update/20200615_PythonResults/{today_str}_{data_category}_pythonoutput.csv"
+    output_result_csv = fr"{myvars.python_results_folder}/{today_str}_{data_category}_pythonoutput.csv"
     rename_stateprog_names = {"AgencyName": "Agency Name", "UnitName": "Unit Name", "ProgramName": "Program Name"}
-    state_program_descriptions_file = myvars.state_program_descriptions_file
-    transformed_data_file = fr"../20200601_Update/20200609_TransformedData/FY2020through2021 - {data_category} - Data Only_TRANSFORMED.xlsx"
+    transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # ASSERTS
-    assert os.path.exists(agency_categories_file)
-    assert os.path.exists(state_program_descriptions_file)
+    assert os.path.exists(myvars.agency_categories_file)
+    assert os.path.exists(myvars.state_program_descriptions_file)
     assert os.path.exists(transformed_data_file)
 
     # FUNCTIONALITY
@@ -45,14 +43,19 @@ def main():
         # pd.set_option('display.max_colwidth', -1)
 
     # Need to control the dtypes to avoid conversion of strings like 'Program Code' to integers (stripping leading zero)
-    master_dtypes = {**budget_dtype, **{header: str for header in column_headers}}
+    master_dtypes = {**budget_column_dtype, **{header: str for header in column_headers}}
 
     # Need the data with appropriate dtypes as df
     data_df = pd.read_excel(io=transformed_data_file, dtype=master_dtypes)
+    print(f"Transformed Data: \n{data_df.info()}")
+
+    # Excel versions - Sometimes doesn't work do to encoding issue. Fallback to csv's in that situation.
+    state_programs_df = pd.read_excel(io=myvars.state_program_descriptions_file, dtype={"ProgramCode": str})
+    print(f"State Program Descriptions: \n{state_programs_df.info()}")
 
     # CSV versions - This method does not convert '05' into an integer but leaves it as string, without using dtypes
     #   In addition, could provide encoding to bypass issue with bytes
-    state_programs_df = pd.read_csv(filepath_or_buffer=state_program_descriptions_file, encoding="Windows-1252")
+    # state_programs_df = pd.read_csv(filepath_or_buffer=myvars.state_program_descriptions_file, encoding="Windows-1252")
 
     # Need to create the Organization Code column and populate in the data dataframe
     data_df[org_code_str] = data_df.apply(
@@ -64,16 +67,20 @@ def main():
         lambda row: str(f"{row['AgencyCode']}_{row['UnitCode']}_{row['ProgramCode']}"), axis=1)
 
     # Only need the 'AgencyName', 'UnitName', 'ProgramName' fields joined to data table, drop all others
-    state_programs_df.drop(columns=org_code_parts, inplace=True)
+    state_programs_df.drop(columns=drop_fields, inplace=True)
 
     # Need to join the state programs data to the data_df on Organization Code using left join
     state_programs_df.set_index(keys=org_code_str, inplace=True, drop=True)
     first_join_df = data_df.join(other=state_programs_df, on=org_code_str)
+    print(f"First Join:")
+    # print(first_join_df)
+    first_join_df.info()
 
     # Need to rename certain columns, from state program descriptions file, to match schema expected in website
     first_join_df.rename(columns=rename_stateprog_names, inplace=True)
     first_join_df.info()
 
+    print("Outputting CSV...")
     first_join_df.to_csv(path_or_buf=output_result_csv, index=False)
     return
 
