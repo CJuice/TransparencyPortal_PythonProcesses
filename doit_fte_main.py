@@ -26,7 +26,7 @@ def main():
     drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "Description"]
     full_pandas_df_printing = True
     org_code_str = "Organization Code"
-    output_result_csv = fr"{myvars.python_results_folder}/{today_str}_{data_category}_pythonoutput.csv"
+    output_result_csv = fr"{myvars.processed_data_folder}/{today_str}_{data_category}_PROCESSED.csv"
     rename_stateprog_names = {"AgencyName": "Agency Name", "UnitName": "Unit Name", "ProgramName": "Program Name"}
     transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 

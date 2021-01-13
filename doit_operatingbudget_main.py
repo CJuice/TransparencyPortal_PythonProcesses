@@ -34,7 +34,7 @@ def main():
     drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "AgencyName", "UnitName", "ProgramName"]
     full_pandas_df_printing = True
     org_code_str = "Organization Code"
-    output_result_csv = fr"{myvars.python_results_folder}/{today_str}_{data_category}_pythonoutput.csv"
+    output_result_csv = fr"{myvars.processed_data_folder}/{today_str}_{data_category}_PROCESSED.csv"
     transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # For TESTING, smaller file size for faster testing/processing

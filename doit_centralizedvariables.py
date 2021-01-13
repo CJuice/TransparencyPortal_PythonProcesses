@@ -14,7 +14,7 @@ first, second, third = (2020, 2021, 2022)
 #   Dependent
 official_data_folder = f"{root_update_folder_path}/OfficialData"
 transformed_data_folder = f"{root_update_folder_path}/TransformedData"
-python_results_folder = f"{root_update_folder_path}/PythonResults"
+processed_data_folder = f"{root_update_folder_path}/ProcessedData"
 extra_required_files = f"{official_data_folder}/ExtraRequiredFiles"
 first_header = f"FY {first} Budget Book Actuals"
 second_header = f"FY {second} Budget Book Working"
