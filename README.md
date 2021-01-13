@@ -49,6 +49,14 @@
 * Script - doit_fte_main.py
 * Script - doit_cur_cr_main.py
 ### Step 5 - Upload Processed Datasets to Open Data Portal as Development Assets for DBM SME Review
+* Create development level assets of the most recent update data only, for customer review
+### Step 6 - Filter Existing Production Data for Historical (not being updated) Data Only
+* Script - doit_filter_historical_fiscalyears_data_main.py
+### Step 7 - Combine Historical and Updated Data to Create Complete Dataset
+* Script - 
+### Step 8 - Upload Combined Datasets to Open Data Portal as Staging Assets for DBM SME Review
+* Create staging level assets of the combined historical and update data, for customer review
+### Step 9 - 
 * 
 ## Notes on the Extra Required Files
 ### State Program Descriptions & Agency Categories
