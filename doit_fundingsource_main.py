@@ -23,7 +23,7 @@ def main():
     agency_code_str = "Agency Code"
     budget_column_dtype = {"Budget": "float"}
     column_headers = myvars.funding_common_headers
-    data_category = "Funding"
+    data_category = myvars.funding_data_type
     full_pandas_df_printing = True
     drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "AgencyName", "UnitName", "ProgramName"]
     org_code_str = "Organization Code"

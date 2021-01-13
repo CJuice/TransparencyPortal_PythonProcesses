@@ -30,7 +30,7 @@ def main():
     budget_type_values_dict = {2017: budget_actual, 2018: budget_actual, 2019: budget_actual,
                                2020: budget_actual, 2021: budget_working, 2022: budget_appropriation}
     column_headers = myvars.budget_common_headers
-    data_category = "Budget"
+    data_category = myvars.budget_data_type
     drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "AgencyName", "UnitName", "ProgramName"]
     full_pandas_df_printing = True
     org_code_str = "Organization Code"

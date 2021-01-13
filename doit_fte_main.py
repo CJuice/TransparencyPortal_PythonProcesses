@@ -22,7 +22,7 @@ def main():
     today_str = datetime.datetime.today().strftime("%Y%m%d")
     budget_column_dtype = {"Budget": "float"}
     column_headers = myvars.funding_common_headers
-    data_category = "FTE"
+    data_category = myvars.fte_data_type
     drop_fields = ["AgencyCode", "UnitCode", "ProgramCode", "Description"]
     full_pandas_df_printing = True
     org_code_str = "Organization Code"

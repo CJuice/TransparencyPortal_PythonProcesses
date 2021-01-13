@@ -60,8 +60,7 @@ def main():
         # Budget Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.budget_source_filename}"
         assert os.path.exists(source_data_file)
-        data_type = "Budget"
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.budget_source_filename, data_type=data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.budget_source_filename, data_type=myvars.budget_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.budget_common_headers
@@ -70,8 +69,7 @@ def main():
         # Funding Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.funds_source_filename}"
         assert os.path.exists(source_data_file)
-        data_type = "Funding"
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.funds_source_filename, data_type=data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.funds_source_filename, data_type=myvars.funding_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.funding_common_headers
@@ -80,9 +78,8 @@ def main():
         # FTE Files - The source file does not contain a 'Fiscal Year' field
         source_data_file = fr"{myvars.official_data_folder}/{myvars.fte_source_filename}"
         assert os.path.exists(source_data_file)
-        data_type = "FTE"
         aggregation_field_name = "Count"  # UNIQUE
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.fte_source_filename, data_type=data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.fte_source_filename, data_type=myvars.fte_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.fte_common_headers
@@ -90,8 +87,7 @@ def main():
 
         # CUR/CR Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.cur_cr_source_filename}"
-        data_type = "CUR-CR"
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.cur_cr_source_filename, data_type=data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.cur_cr_source_filename, data_type=myvars.cur_cr_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.cur_cr_common_headers
