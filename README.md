@@ -19,8 +19,8 @@
         * ProductionAssetBackups
             * Storage location for the existing production assets in the Open Data Portal. This is a backup action 
             prior to performing updates to the cloud
-        * PythonResults
-            * I believe these are polished outputs for upsert to cloud but not sure ***
+        * ProcessedData
+            * Will contain processed datasets for upsert to open data platform for SME review
         * FYFilteredProdData
             * filtered FY data that precedes mashing of historical and current round data ***
 ### Step 2 - High Level Data Quality Inspection
