@@ -23,7 +23,7 @@ def main():
     agency_code_str = "Agency Code"
     budget_column_dtype = {"Budget": "float"}
     column_headers = myvars.cur_cr_common_headers
-    data_category = "CUR-CR"
+    data_category = myvars.cur_cr_data_type
     agency_categories_drop = ["Agency Name"]
     full_pandas_df_printing = True
     org_code_str = "Organization Code"
