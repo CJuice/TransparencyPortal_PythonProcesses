@@ -19,7 +19,9 @@ Revisions:
     20200601, CJuice, Collapsed the four independent scripts for budget, funding, fte, and cur/cr into a
         single script.
     20200615, CJuice, Process was convert "Program Code" from string like number to integer. Revised to include dtypes
-    20210112, CJuice, Refactored variables to allow easier editing each year
+    20210112, CJuice, Refactored variables to allow easier editing each year. Added a filter for notnull FY budget
+        values in each of the three FY columns. Process was tripling output of records instead of collapsing three
+        columns into one.
 """
 
 
@@ -49,7 +51,7 @@ def main():
 
     # CONTROL: Toggle data type of focus. Process is same for each but headers vary. The headers must be verified first!
     #   Only highest True will execute
-    budget = True
+    budget = False
     funding = False
     fte = False
     cur_cr = False
@@ -121,28 +123,28 @@ def main():
         fy_headers = common_headers + [column_name]
 
         # Need to isolate the columns of interest for the fy of focus. Pass a list of columns to a copy of the orig df
-        fy_df = orig_df.copy()[fy_headers]
+        fy_df_filtered = orig_df[orig_df[column_name].notnull()].copy()[fy_headers]
 
         # Need to rename the fy specific column to the common name for later concatenation of dataframes
-        fy_df.rename(columns={column_name: aggregation_field_name}, inplace=True)
+        fy_df_filtered.rename(columns={column_name: aggregation_field_name}, inplace=True)
 
         # Need to remove the 'FY ' from the fiscal year values, except if FTE data
         if fte:
 
             # Special handing for FTE because source data does not contain a 'Fiscal Year' column
-            fy_df[fiscal_year_header_str] = fy_focus
+            fy_df_filtered[fiscal_year_header_str] = fy_focus
         else:
 
             # Could potentially be straight assignment of fy_focus value but seemed safer to work with provided values.
-            fy_df[fiscal_year_header_str] = fy_df[fiscal_year_header_str].apply(
+            fy_df_filtered[fiscal_year_header_str] = fy_df_filtered[fiscal_year_header_str].apply(
                 lambda x: int(x.replace(fy_lead_string, "")))
 
         # Remnant Note, may be valuable on future rounds
         # fy_df["Type"] = "Budget-[Working/Allowance]"  # Completed in FME, would be either of the terms in brackets []
 
-        dataframes_list.append(fy_df)
+        dataframes_list.append(fy_df_filtered)
 
-        print(fy_df.info())
+        print(fy_df_filtered.info())
 
     # Concatenate into a single dataframe for output.
     new_master_df = pd.concat(dataframes_list)
