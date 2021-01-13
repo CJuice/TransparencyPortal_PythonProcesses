@@ -37,7 +37,6 @@ def main():
     csv_out = False
     dataframes_list = []
     excel_out = True
-    fiscal_year_header_str = "Fiscal Year"
     fy_lead_string = "FY "
     assert os.path.exists(myvars.official_data_folder)
     assert os.path.exists(myvars.transformed_data_folder)
@@ -132,11 +131,11 @@ def main():
         if fte:
 
             # Special handing for FTE because source data does not contain a 'Fiscal Year' column
-            fy_df_filtered[fiscal_year_header_str] = fy_focus
+            fy_df_filtered[myvars.fiscal_year_header_str] = fy_focus
         else:
 
             # Could potentially be straight assignment of fy_focus value but seemed safer to work with provided values.
-            fy_df_filtered[fiscal_year_header_str] = fy_df_filtered[fiscal_year_header_str].apply(
+            fy_df_filtered[myvars.fiscal_year_header_str] = fy_df_filtered[myvars.fiscal_year_header_str].apply(
                 lambda x: int(x.replace(fy_lead_string, "")))
 
         # Remnant Note, may be valuable on future rounds
