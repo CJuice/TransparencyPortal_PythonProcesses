@@ -12,6 +12,7 @@ funds_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Por
 first, second, third = (2020, 2021, 2022)
 
 #   Dependent
+combined_data_folder = f"{root_update_folder_path}/CombinedData"
 filtered_data_folder = f"{root_update_folder_path}/FilteredData"
 official_data_folder = f"{root_update_folder_path}/OfficialData"
 processed_data_folder = f"{root_update_folder_path}/ProcessedData"
@@ -29,6 +30,10 @@ state_program_descriptions_file = fr"{extra_required_files}/StateProgramDescript
 # agency_categories_file = fr"{extra_required_files}/AgencyCategories_CJuiceCleaned.csv"
 # state_program_descriptions_file = fr"{extra_required_files}/StateProgramDescriptions.csv"
 ##########
+budget_data_type = "Budget"
+cur_cr_data_type = "CUR-CR"
+fte_data_type = "FTE"
+funding_data_type = "Funding"
 fiscal_year_header_str = "Fiscal Year"
 budget_common_headers = ["Fiscal Year", "Agency Code", "Agency Name", "Unit Code", "Unit Name", "Program Code",
                          "Program Name", "Subprogram Code", "Subprogram Name", "Object Code", "Object Name",
