@@ -58,14 +58,17 @@ def main():
 
     # Need the data with appropriate dtypes as df
     data_df = pd.read_excel(io=transformed_data_file, dtype=master_dtypes)
-    print(f"Transformed Data: \n{data_df.info()}")
+    print(f"Transformed Data:")
+    print(data_df.info())
 
     # Excel versions - Sometimes doesn't work do to encoding issue. Fallback to csv's in that situation.
     state_programs_df = pd.read_excel(io=myvars.state_program_descriptions_file, dtype={"ProgramCode": str})
-    print(f"State Program Descriptions: \n{state_programs_df.info()}")
+    print(f"State Program Descriptions")
+    print(state_programs_df.info())
 
     agency_categories_df = pd.read_excel(io=myvars.agency_categories_file)
-    print(f"Agency Categories: \n{agency_categories_df.info()}")
+    print(f"Agency Categories")
+    print(agency_categories_df.info())
 
     # CSV versions - This method does not convert '05' into an integer but leaves it as string, without using dtypes
     #   In addition, could provide encoding to bypass issue with bytes
@@ -90,7 +93,7 @@ def main():
     first_join_df = data_df.join(other=state_programs_df, on=org_code_str)
     print(f"First Join:")
     # print(first_join_df)
-    first_join_df.info()
+    print(first_join_df.info())
 
     # Need to join the agency categories data to the first join df on Agency Code using left join
     agency_categories_df.drop(columns=agency_categories_drop, inplace=True)
@@ -98,7 +101,7 @@ def main():
     second_join_df = first_join_df.join(other=agency_categories_df, on="Agency Code")
     print(f"Second Join:")
     # print(second_join_df)
-    second_join_df.info()
+    print(second_join_df.info())
 
     print("Outputting CSV...")
     second_join_df.to_csv(path_or_buf=output_result_csv, index=False)
