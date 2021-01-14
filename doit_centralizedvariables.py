@@ -47,6 +47,8 @@ fte_common_headers = ["Agency Code", "Unit Code", "Program Code"]
 funding_common_headers = ['Fiscal Year', 'Agency Code', 'Agency Name', 'Unit Code', 'Unit Name',
                           'Program Code', 'Program Name', 'Fund Type Name', 'Fund Source Code',
                           'Fund Source Name']
+data_type_header_map_dict = {budget_data_type: budget_common_headers, cur_cr_data_type: cur_cr_common_headers,
+                             fte_data_type: fte_common_headers, funding_data_type: funding_common_headers}
 
 # The following three dicts, pulled from the fme job as hard coded value mappers, can be live generated
 #   from the state program descriptions file. Performed this through a join, rather than dict build.
