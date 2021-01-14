@@ -84,8 +84,10 @@ def main():
     for style, paths_tup in historical_to_update_paths_mapping.items():
         filtered, processed = paths_tup
         new_concatenated_file = os.path.join(myvars.combined_data_folder, f"{today_str}_{style}_COMBINED.csv")
-        filtered_df = pd.read_csv(filtered, low_memory=False)
-        processed_df = pd.read_csv(processed, low_memory=False)
+        common_column_dtypes_dict = {header: str for header in myvars.data_type_header_map_dict.get(style)}
+        common_column_dtypes_dict[myvars.fiscal_year_header_str] = int
+        filtered_df = pd.read_csv(filtered, dtype=common_column_dtypes_dict, low_memory=False)
+        processed_df = pd.read_csv(processed, dtype=common_column_dtypes_dict, low_memory=False)
         print(f"\n{style}\n\tFiltered")
         print(filtered_df.info())
         print(f"\n{style}\n\tProcessed")

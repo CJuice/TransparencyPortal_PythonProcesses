@@ -53,10 +53,13 @@ def main():
             full_path = os.path.join(directory, file)
             assert os.path.exists(full_path)
             data_type = determine_data_type(filename=file)
+            common_column_dtypes_dict = {header: str for header in myvars.data_type_header_map_dict.get(data_type)}
+            common_column_dtypes_dict[myvars.fiscal_year_header_str] = int
             new_file_name = f"{data_type}_FILTERED_FYs.csv"
             full_path_new = os.path.join(myvars.filtered_data_folder, new_file_name)
-            df = pd.read_csv(filepath_or_buffer=full_path)
-            # print(df.info())
+            df = pd.read_csv(filepath_or_buffer=full_path, dtype=common_column_dtypes_dict)
+            print("Unfiltered production data")
+            print(df.info())
 
             try:
                 print(f"Unique Fiscal Year values in {file} dataframe are \n{df[myvars.fiscal_year_header_str].unique()}")
@@ -66,6 +69,7 @@ def main():
             # filter data in Fiscal Year column to only years of interest
             filtered_df = df[(df[myvars.fiscal_year_header_str] <= max_year_of_historical_fy_data)]
             # print(df.info())
+            print("Filtered production data")
             print(filtered_df.info())
 
             print(f"Output to csv: {is_output}")
