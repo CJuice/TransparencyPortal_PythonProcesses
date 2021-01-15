@@ -21,8 +21,16 @@
             prior to performing updates to the cloud
         * ProcessedData
             * Will contain processed datasets for upsert to open data platform for SME review
-        * FYFilteredProdData
+        * FilteredProdData
             * filtered FY data that precedes mashing of historical and current round data ***
+        * Notebooks
+            * Any jupyter notebooks necessary for processing data
+        * Scratch
+            * Space for programmatic testing and devlopment, including fixes to assets.
+            * The contents of this folder and the Notebooks folder may overlap
+        * AnnotationData
+            * Files related to annotation values
+        
 ### Step 2 - High Level Data Quality Inspection
 * Initial Data Inspection
     * Initial Assessment of Data Files - Jupyter Notebook
@@ -35,6 +43,7 @@
          to the attention of the DBM SME
         * Look to see that the total number of non-null records in the three FY columns sums to the total number of 
         records in the dataframe
+        
 ### Step 3 - Prepare/Transform Original Data for Subsequent Processing
 * Transform Source Data
     * Script - doit_transform_original_data_main.py
@@ -43,21 +52,57 @@
         source data file schema from year to year. Expect to make tweaks!
         * Toggle the boolean controls on the dataset of focus.
         * Process outputs to the TransformedData folder
+        
 ### Step 4 - Process Transformed Datasets
 * Script - doit_operatingBudget_main.py
 * Script - doit_fundingsource_main.py
 * Script - doit_fte_main.py
 * Script - doit_cur_cr_main.py
+
 ### Step 5 - Upload Processed Datasets to Open Data Portal as Development Assets for DBM SME Review
 * Create development level assets of the most recent update data only, for customer review
+* Create a data lens for the asset to help the SME
+* Minimal metadata needed
+* Work with SME if issues are discovered and reprocess and restage data as needed
+
 ### Step 6 - Filter Existing Production Data for Historical (not being updated) Data Only
 * Script - doit_filter_historical_fiscalyears_data_main.py
+
 ### Step 7 - Combine Historical and Updated Data to Create Complete Dataset
-* Script - 
+* Script - doit_concatenate_old_new_data_main.py
+
 ### Step 8 - Upload Combined Datasets to Open Data Portal as Staging Assets for DBM SME Review
 * Create staging level assets of the combined historical and update data, for customer review
-### Step 9 - 
-* 
+* Create a data lens for the asset to help the SME
+* Minimal metadata needed
+* Work with SME if issues are discovered and reprocess and restage data as needed
+
+### Step 9 - Web Page - Backups Sites
+* Create four new sites and name them the same as the production sites excepting a "BACKUP" indicator
+* Import the configurations from the production web assets into the backup sites 
+* These backups are for roll back during failed production push
+
+### Step 10 - Web Page - Staging Sites
+* Create four new sites and name them the same as the production sites excepting a "STAGING" indicator
+* Import the configurations from the production web assets into the staging sites 
+* Switch the staging sites off of the existing production asset 4x4 and onto the staging data asset 4x4
+* The staging sites are for redesign/update efforts
+* The staging site configurations are imported into the production sites on production deploy of the new/update design
+
+### Step 11 - Final Data Preparations
+* If using the staging data assets and discontinuing the existing production data assets
+    * Fill out metadata for data assets and get SME review of language
+* If using existing production data assets
+    * Metadata references to fiscal years will need to be revised during deploy
+
+### Step 12 - Deploy
+* Switch staging data assets from private to public OR replace existing production data with new data and revise metadata
+* Import the configurations from the approved staging sites into the existing production sites
+* Notify DBM SME
+
+### Step 13 - Testing
+* After notifying SME of production push, perform testing
+
 ## Notes on the Extra Required Files
 ### State Program Descriptions & Agency Categories
 * These two files are raw files from DBM SME. To work in our process they need to be manipulated.
