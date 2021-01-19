@@ -1,6 +1,10 @@
 """
-TODO:
-Believe this has to do with the annotations portion of the process.
+Clean the annotation text to reference the correct fiscal year in links.
+The annotation text in both the Budget and CUR/CR pages must be revised when the Fiscal Year is updated. Download the
+annotation text as a csv, alter the values, upload to overwrite.
+Author: CJuice
+Created: ~20200101
+Revisions:
 """
 
 
