@@ -42,7 +42,12 @@ def main():
     assert os.path.exists(myvars.transformed_data_folder)
 
     # FUNCTIONS
-    def name_transformed(filename: str, data_type: str) -> str:
+    def create_transformed_filename(data_type: str) -> str:
+        """
+        Create a file name for transformed data ouptut files and return
+        :param data_type: str, category of data acting on
+        :return: str
+        """
         excel_ending = ".xlsx"
         return f"FY{myvars.first}_{myvars.third}_{data_type}_TRANSFORMED{excel_ending}"
 
@@ -60,7 +65,7 @@ def main():
         # Budget Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.budget_source_filename}"
         assert os.path.exists(source_data_file)
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.budget_source_filename, data_type=myvars.budget_data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.budget_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.budget_common_headers
@@ -69,7 +74,7 @@ def main():
         # Funding Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.funds_source_filename}"
         assert os.path.exists(source_data_file)
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.funds_source_filename, data_type=myvars.funding_data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.funding_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.funding_common_headers
@@ -79,7 +84,7 @@ def main():
         source_data_file = fr"{myvars.official_data_folder}/{myvars.fte_source_filename}"
         assert os.path.exists(source_data_file)
         aggregation_field_name = "Count"  # UNIQUE
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.fte_source_filename, data_type=myvars.fte_data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.fte_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.fte_common_headers
@@ -87,7 +92,7 @@ def main():
 
         # CUR/CR Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.cur_cr_source_filename}"
-        transformed_data_file = fr"{myvars.transformed_data_folder}/{name_transformed(myvars.cur_cr_source_filename, data_type=myvars.cur_cr_data_type)}"
+        transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.cur_cr_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
         common_headers = myvars.cur_cr_common_headers
