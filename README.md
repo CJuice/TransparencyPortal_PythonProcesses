@@ -8,28 +8,33 @@
     the ticket
 * Create the expected folder structure on your computer where the python processes will be run
     * The expected folders are as follows
+        * AnnotationData
+            * Files related to annotation values
+        * CombinedData
+            * Will contain datsets that are a combination of the processed current update data and the filtered 
+            historical data. These combined datasets are the final product
+        * FilteredData
+            * For production data that has been filtered for the historical fiscal years of interest.
+            * These assets will be combined with the processed data to make the final product assets
+        * Notebooks
+            * Any jupyter notebooks necessary for processing data 
+            * This folders content may overlap with the Scratch folder contents
         * OfficialData
             * Will contain the source files from the DBM SME
         * OfficialData > ExtraRequiredFiles
             * There are two expected/needed extra files and they are as follows
                 * State Program Descriptions
                 * Agency Categories
-        * TransformedData
-            * Will contain transformed source files that are ready for further processing
+        * ProcessedData
+            * Will contain processed datasets for upsert to open data platform for SME review
         * ProductionAssetBackups
             * Storage location for the existing production assets in the Open Data Portal. This is a backup action 
             prior to performing updates to the cloud
-        * ProcessedData
-            * Will contain processed datasets for upsert to open data platform for SME review
-        * FilteredProdData
-            * filtered FY data that precedes mashing of historical and current round data ***
-        * Notebooks
-            * Any jupyter notebooks necessary for processing data
         * Scratch
-            * Space for programmatic testing and devlopment, including fixes to assets.
-            * The contents of this folder and the Notebooks folder may overlap
-        * AnnotationData
-            * Files related to annotation values
+            * For programmatic testing and development, including fixes to assets
+            * This folders content may overlap with the Notebooks folder content
+        * TransformedData
+            * Will contain transformed source files that are ready for further processing
         
 ### Step 2 - High Level Data Quality Inspection
 * Initial Data Inspection
@@ -41,16 +46,17 @@
         * Look at the number of records in each FY column
         * Look for columns with null records, other than the FY since they are split across three columns, and bring
          to the attention of the DBM SME
-        * Look to see that the total number of non-null records in the three FY columns sums to the total number of 
+        * Look to see that the total number of non-null records in the three budget columns sums to the total number of 
         records in the dataframe
         
 ### Step 3 - Prepare/Transform Original Data for Subsequent Processing
 * Transform Source Data
     * Script - doit_transform_original_data_main.py
-        * Inspect the variables in the script prior to running. Edit FY year references and check that the expected field
-        names from the script match the field names provided in the source data. One cannot count on the DBM SME preserving 
-        source data file schema from year to year. Expect to make tweaks!
-        * Toggle the boolean controls on the dataset of focus.
+        * Inspect the variables in the script prior to running 
+        * Edit FY year references and check that the expected field names from the script match the field names 
+        provided in the source data. You cannot count on the DBM SME preserving source data file schema from year
+        to year. Expect to make tweaks!
+        * Toggle the boolean controls on the dataset of focus
         * Process outputs to the TransformedData folder
         
 ### Step 4 - Process Transformed Datasets
@@ -61,9 +67,9 @@
 
 ### Step 5 - Upload Processed Datasets to Open Data Portal as Development Assets for DBM SME Review
 * Create development level assets of the most recent update data only, for customer review
-* Create a data lens for the asset to help the SME
+* Create a data lens for the asset to help the DBM SME
 * Minimal metadata needed
-* Work with SME if issues are discovered and reprocess and restage data as needed
+* Work with SME if issues are discovered and reprocess and re-stage data as needed
 
 ### Step 6 - Filter Existing Production Data for Historical (not being updated) Data Only
 * Script - doit_filter_historical_fiscalyears_data_main.py
@@ -96,9 +102,16 @@
     * Metadata references to fiscal years will need to be revised during deploy
 
 ### Step 12 - Deploy
-* Switch staging data assets from private to public OR replace existing production data with new data and revise metadata
+* If updating/overwriting existing production assets
+    * Replace the data with the newly approved data
+    * Revise metadata
+* If using the new staged assets and moving off of existing production assets
+    * Switch staging data assets from private to public
+    * Switch existing production assets to private from public
+    * Rename existing production assets to have new name such as "OLD"
+    * Rename new production assets, previously staging assets, by removing "STAGING" reference 
 * Import the configurations from the approved staging sites into the existing production sites
-* Notify DBM SME
+* Ensure site updated and then notify DBM SME
 
 ### Step 13 - Testing
 * After notifying SME of production push, perform testing
