@@ -93,6 +93,13 @@
 * Import the configurations from the production web assets into the staging sites 
 * Switch the staging sites off of the existing production asset 4x4 and onto the staging data asset 4x4
 * The staging sites are for redesign/update efforts
+* Reconfigure the language in the staging sites as needed
+* Annotation text and links may require editing
+    * Download a csv of the annotations. Budget and CUR/CR currently have annotations
+    * Alter the links and text in the annotations
+    * Upload the revised annotations csv
+* Inspect the links programmatically. There is an existing Jupyter Notebook for iterating over links, making requests, 
+and inventorying response status codes to find bad links.
 * The staging site configurations are imported into the production sites on production deploy of the new/update design
 
 ### Step 11 - Final Data Preparations
