@@ -1,4 +1,4 @@
-# Maryland Transparency Portal
+# ETL Process - Maryland Transparency Portal Financial Data
 ## Yearly Budget Data Updates
 
 ### Step 1 - Administrative Setup
