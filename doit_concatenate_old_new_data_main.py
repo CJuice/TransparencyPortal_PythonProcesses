@@ -59,10 +59,13 @@ def main():
             print("Issue while assigning files to variables")
             exit()
 
-    historical_to_update_files_mapping = {myvars.cur_cr_data_type: (cur_cr_filtered, cur_cr_processed),
-                                          myvars.funding_data_type: (funding_filtered, funding_processed),
-                                          myvars.budget_data_type: (budget_filtered, budget_processed),
-                                          myvars.fte_data_type: (fte_filtered, fte_processed)}
+    # variable intentionally formatted to multi-line to enable commenting out files if an update does not include all
+    historical_to_update_files_mapping = {
+        myvars.cur_cr_data_type: (cur_cr_filtered, cur_cr_processed),
+        myvars.funding_data_type: (funding_filtered, funding_processed),
+        myvars.budget_data_type: (budget_filtered, budget_processed),
+        myvars.fte_data_type: (fte_filtered, fte_processed)
+    }
 
     historical_to_update_paths_mapping = {style: (os.path.join(myvars.filtered_data_folder, values[0]), os.path.join(myvars.processed_data_folder, values[1])) for style, values in historical_to_update_files_mapping.items()}
     print(historical_to_update_paths_mapping)
