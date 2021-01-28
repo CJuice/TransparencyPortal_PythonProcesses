@@ -22,7 +22,7 @@ def main():
 
     # VARIABLES
     is_output = True
-    max_year_of_historical_fy_data = 2019
+    max_year_of_historical_fy_data = 2020
 
     # ASSERTS
     assert os.path.exists(myvars.production_data_backups_folder)
@@ -68,9 +68,13 @@ def main():
 
             # filter data in Fiscal Year column to only years of interest
             filtered_df = df[(df[myvars.fiscal_year_header_str] <= max_year_of_historical_fy_data)]
-            # print(df.info())
             print("Filtered production data")
             print(filtered_df.info())
+
+            try:
+                print(f"Unique Fiscal Year values in filtered dataframe are \n{filtered_df[myvars.fiscal_year_header_str].unique()}")
+            except KeyError:
+                print(f"KEYERROR: Filtered dataframe does not contain {myvars.fiscal_year_header_str} column.")
 
             print(f"Output to csv: {is_output}")
             if is_output:
