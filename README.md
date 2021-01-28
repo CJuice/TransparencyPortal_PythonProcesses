@@ -1,5 +1,5 @@
 # ETL Process - Maryland Transparency Portal Financial Data
-## Yearly Budget Data Updates
+## Yearly Budget Data Updates for Budget, Higher Education, Funding Source, FTE
 
 ### Step 1 - Administrative Setup
 * Create a ticket from the request for data processing and website update
@@ -94,12 +94,14 @@
 * Switch the staging sites off of the existing production asset 4x4 and onto the staging data asset 4x4
 * The staging sites are for redesign/update efforts
 * Reconfigure the language in the staging sites as needed
-* Annotation text and links may require editing
-    * Download a csv of the annotations. Budget and CUR/CR currently have annotations
-    * Alter the links and text in the annotations
+* Annotation text and links will require editing with a change in fiscal year
+    * Download a csv of the annotations. 
+        * Budget and CUR/CR currently have annotations
+    * Alter the links and text in the annotations. 
+        * See Notebook CorrectingAnnotation_Revise_FY_Links.ipynb
+    * Assess the links for bad/incorrect url's
+        * See Notebook MFR_Annotations_LinkChecker.ipynb
     * Upload the revised annotations csv
-* Inspect the links programmatically. There is an existing Jupyter Notebook for iterating over links, making requests, 
-and inventorying response status codes to find bad links.
 * The staging site configurations are imported into the production sites on production deploy of the new/update design
 
 ### Step 11 - Final Data Preparations
@@ -137,5 +139,6 @@ and inventorying response status codes to find bad links.
     * The State Program Descriptions file had a filter on that needed to be turned off. 
     * The sheet name was already correct to match the original FME process expectation. 
     * Otherwise the data was acceptable so a new version was not saved.
-* When a new batch of data is run, two fresh versions of these files should be sent by DBM SME.
+* When a new batch of data is run, two fresh versions of these files should be sent by DBM SME, or if the SME will not
+provide then they need to provide a statement indicating nothing has changed so that responsibility sits with them.
         
