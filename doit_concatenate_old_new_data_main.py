@@ -1,13 +1,16 @@
 """
 Concatenate the processed update data files with their matching historical filtered data files and output to csv.
 Iterate over the pairs of update data and corresponding historical filtered data, concatenate them into a
-single resource, and write that resource to csv for upload to open data platform as staging assets.
+single resource, and write that resource to csv for upload to open data platform as staging assets. The process
+is sensitive to a partial update. Process expects four files so a partial update requires temporary manipulation of
+the variables.
 
 Author: CJuice
 Created: 20200617
 Revisions:
     20210112, CJuice, Refactored variables to allow easier editing each year. Also redesigned to work with output
         of previous step to enable step to step running without reconfiguring variables.
+    20210201, CJuice, Filter out budget values equal to zero before writing csv.
 """
 
 
@@ -21,8 +24,6 @@ def main():
 
     # VARIABLES
     today_str = datetime.datetime.today().strftime("%Y%m%d")
-    full_pandas_df_printing = True
-
     processed_files_list = None
     filtered_files_list = None
 
@@ -59,7 +60,7 @@ def main():
             print("Issue while assigning files to variables")
             exit()
 
-    # variable intentionally formatted to multi-line to enable commenting out files if an update does not include all
+    # This var is intentionally formatted to multi-line to enable commenting out files if update doesn't include all
     historical_to_update_files_mapping = {
         myvars.cur_cr_data_type: (cur_cr_filtered, cur_cr_processed),
         myvars.funding_data_type: (funding_filtered, funding_processed),
@@ -78,12 +79,6 @@ def main():
         assert os.path.exists(processed)
 
     # FUNCTIONALITY
-    if full_pandas_df_printing:
-        # pd.set_option('display.max_rows', None)
-        pd.set_option('display.max_columns', None)
-        pd.set_option('display.width', None)
-        # pd.set_option('display.max_colwidth', -1)
-
     for style, paths_tup in historical_to_update_paths_mapping.items():
         filtered, processed = paths_tup
         new_concatenated_file = os.path.join(myvars.combined_data_folder, f"{today_str}_{style}_COMBINED.csv")
@@ -95,10 +90,16 @@ def main():
         print(filtered_df.info())
         print(f"\n{style}\n\tProcessed")
         print(processed_df.info())
+
         new_df = pd.concat(objs=[filtered_df, processed_df], ignore_index=True, sort=True, copy=False)
         print(f"\n{style}\n\tCombined")
         print(new_df.info())
-        new_df.to_csv(path_or_buf=new_concatenated_file, index=False)
+
+        print("Removing Budget values equal to 0.")
+        no_zero_df = new_df[(new_df["Budget"] < 0) | (0 < new_df["Budget"])]
+        print(no_zero_df.info())
+
+        no_zero_df.to_csv(path_or_buf=new_concatenated_file, index=False)
 
     return
 
