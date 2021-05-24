@@ -54,7 +54,10 @@ def main():
         :return: str
         """
         excel_ending = ".xlsx"
-        return f"FY{myvars.first}_{myvars.third}_{data_type}_TRANSFORMED{excel_ending}"
+        if myvars.is_mid_year:
+            return f"FY{myvars.second}_{myvars.third}_{data_type}_TRANSFORMED{excel_ending}"
+        else:
+            return f"FY{myvars.first}_{myvars.third}_{data_type}_TRANSFORMED{excel_ending}"
 
     # FUNCTIONALITY
 

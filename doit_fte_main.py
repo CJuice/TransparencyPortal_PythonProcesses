@@ -28,7 +28,10 @@ def main():
     org_code_str = "Organization Code"
     output_result_csv = fr"{myvars.processed_data_folder}/{today_str}_{data_category}_PROCESSED.csv"
     rename_stateprog_names = {"AgencyName": "Agency Name", "UnitName": "Unit Name", "ProgramName": "Program Name"}
-    transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
+    if myvars.is_mid_year:
+        transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.second}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
+    else:
+        transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # ASSERTS
     assert os.path.exists(myvars.agency_categories_file)
