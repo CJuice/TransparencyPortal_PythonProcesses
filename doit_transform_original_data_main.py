@@ -13,6 +13,8 @@ is a tool to be applied to one of the four datasets it was designed to transform
 a particular dataset and then switch it back after successful completion. Check the column headers match those in the
 data files and change the data files path variables to operate on the most recent data.
 
+Note: A mid year update only contains two FY's of data, not three. The oldest years worth of data will be missing.
+
 Author: CJuice
 Created: ~20200101
 Revisions: 
@@ -22,6 +24,8 @@ Revisions:
     20210112, CJuice, Refactored variables to allow easier editing each year. Added a filter for notnull FY budget
         values in each of the three FY columns. Process was tripling output of records instead of collapsing three
         columns into one.
+    20210522, CJuice, Adjusted process to handle a mid-year update when only two of three expected budget fields
+        are provided in the update data files.
 """
 
 
@@ -40,6 +44,7 @@ def main():
     fy_lead_string = "FY "
     assert os.path.exists(myvars.official_data_folder)
     assert os.path.exists(myvars.transformed_data_folder)
+    pd.set_option("display.max_columns", None)
 
     # FUNCTIONS
     def create_transformed_filename(data_type: str) -> str:
@@ -60,10 +65,16 @@ def main():
     fte = False
     cur_cr = False
 
+    # CONTROL: For mid-year updates, only two columns of data are provided. A third column for the oldest year must be
+    #   manually added. The column is populated with zeros. If is_mid_year is True then that column is dropped prior to
+    #   output.
+    is_mid_year = False
+
     if budget:
 
         # Budget Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.budget_source_filename}"
+        print(source_data_file)
         assert os.path.exists(source_data_file)
         transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.budget_data_type)}"
 
@@ -73,6 +84,7 @@ def main():
 
         # Funding Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.funds_source_filename}"
+        print(source_data_file)
         assert os.path.exists(source_data_file)
         transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.funding_data_type)}"
 
@@ -82,6 +94,7 @@ def main():
 
         # FTE Files - The source file does not contain a 'Fiscal Year' field
         source_data_file = fr"{myvars.official_data_folder}/{myvars.fte_source_filename}"
+        print(source_data_file)
         assert os.path.exists(source_data_file)
         aggregation_field_name = "Count"  # UNIQUE
         transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.fte_data_type)}"
@@ -92,6 +105,7 @@ def main():
 
         # CUR/CR Files
         source_data_file = fr"{myvars.official_data_folder}/{myvars.cur_cr_source_filename}"
+        print(source_data_file)
         transformed_data_file = fr"{myvars.transformed_data_folder}/{create_transformed_filename(data_type=myvars.cur_cr_data_type)}"
 
         # Need to verify these each round of updates to make sure these column headers are in the source data file
@@ -123,7 +137,16 @@ def main():
         fy_headers = common_headers + [column_name]
 
         # Need to isolate the columns of interest for the fy of focus. Pass a list of columns to a copy of the orig df
-        fy_df_filtered = orig_df[orig_df[column_name].notnull()].copy()[fy_headers]
+        try:
+            fy_df_filtered = orig_df[orig_df[column_name].notnull()].copy()[fy_headers]
+        except KeyError as ke:
+            if is_mid_year:
+                print(f"COLUMN MISSING: {column_name}, is_mid_year == {is_mid_year}")
+                print("Continuing to next field...")
+                continue
+            else:
+                print(f"KeyError: {ke}")
+                exit()
 
         # Need to rename the fy specific column to the common name for later concatenation of dataframes
         fy_df_filtered.rename(columns={column_name: aggregation_field_name}, inplace=True)
@@ -158,7 +181,11 @@ def main():
 
     print(f"\nOriginal dataset was shape: {orig_df.shape}")  # New output will be multiple times the size of this output
     print(f"\nTransformed dataset is shape: {new_master_df.shape}")
-    print(f"\nNew dataset record count is {number_of_years_this_round} times the original column count: {orig_col_count*number_of_years_this_round == new_col_count}\n")
+    if is_mid_year:
+        print(f"\nNew dataset record count is {number_of_years_this_round - 1} [*is_mid_year: {is_mid_year}] times the original column count: {orig_col_count * (number_of_years_this_round - 1) == new_col_count}")
+    else:
+        print(f"\nNew dataset record count is {number_of_years_this_round} times the original column count: {orig_col_count*number_of_years_this_round == new_col_count}\n")
+
     new_master_df.info()
 
     # EXCEL OUTPUT
