@@ -65,11 +65,6 @@ def main():
     fte = False
     cur_cr = False
 
-    # CONTROL: For mid-year updates, only two columns of data are provided. A third column for the oldest year must be
-    #   manually added. The column is populated with zeros. If is_mid_year is True then that column is dropped prior to
-    #   output.
-    is_mid_year = False
-
     if budget:
 
         # Budget Files
@@ -140,8 +135,8 @@ def main():
         try:
             fy_df_filtered = orig_df[orig_df[column_name].notnull()].copy()[fy_headers]
         except KeyError as ke:
-            if is_mid_year:
-                print(f"COLUMN MISSING: {column_name}, is_mid_year == {is_mid_year}")
+            if myvars.is_mid_year:
+                print(f"COLUMN MISSING: {column_name}, is_mid_year == {myvars.is_mid_year}")
                 print("Continuing to next field...")
                 continue
             else:
@@ -181,8 +176,8 @@ def main():
 
     print(f"\nOriginal dataset was shape: {orig_df.shape}")  # New output will be multiple times the size of this output
     print(f"\nTransformed dataset is shape: {new_master_df.shape}")
-    if is_mid_year:
-        print(f"\nNew dataset record count is {number_of_years_this_round - 1} [*is_mid_year: {is_mid_year}] times the original column count: {orig_col_count * (number_of_years_this_round - 1) == new_col_count}")
+    if myvars.is_mid_year:
+        print(f"\nNew dataset record count is {number_of_years_this_round - 1} [*is_mid_year: {myvars.is_mid_year}] times the original column count: {orig_col_count * (number_of_years_this_round - 1) == new_col_count}")
     else:
         print(f"\nNew dataset record count is {number_of_years_this_round} times the original column count: {orig_col_count*number_of_years_this_round == new_col_count}\n")
 

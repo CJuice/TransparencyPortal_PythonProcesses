@@ -16,6 +16,11 @@ funds_source_filename = "FY 2021 through FY 2022 Legislative Appropriation for O
 # funds_source_filename = "FY 2021 - FY 2022 Gov Allowance for Open Data - Funds Data Only 1-22-21.xlsx"
 first, second, third = (2020, 2021, 2022)
 
+# CONTROL: For mid-year updates, only two columns of data are provided. A third column for the oldest year must be
+#   manually added. The column is populated with zeros. If is_mid_year is True then that column is dropped prior to
+#   output.
+is_mid_year = True
+
 #   Dependent
 combined_data_folder = f"{root_update_folder_path}/CombinedData"
 filtered_data_folder = f"{root_update_folder_path}/FilteredData"
