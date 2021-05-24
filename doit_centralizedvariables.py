@@ -7,11 +7,11 @@ Revisions:
 
 ##########
 # Will/May change with each update
-root_update_folder_path = r"..\XXXXXXXXX"
-budget_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Expenditure Data.xlsx"
-cur_cr_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Higher Ed Exp Data.xlsx"
-fte_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - FTE Data.xlsx"
-funds_source_filename = "FY 2020 through FY 2022 Gov Allowance for Open Data Portal - Funds Data Only.xlsx"
+root_update_folder_path = r"..\20210520_Update"
+budget_source_filename = "FY 2021 through FY 2022 Appropriation for Open Data Portal - Expenditure Data.xlsx"
+cur_cr_source_filename = "FY 2021 through FY 2022 Appropriation for Open Data Portal - Higher Ed Exp Data.xlsx"
+fte_source_filename = "FY 2021 through FY 2022 Legislative Appropriation for Open Data Portal - FTE Data.xlsx"
+funds_source_filename = "FY 2021 through FY 2022 Legislative Appropriation for Open Data - Funds Data.xlsx"
 # budget_source_filename = "FY 2021 - FY 2022 Gov Allowance for Open Data - Expenditure Data 1-22-21.xlsx"
 # funds_source_filename = "FY 2021 - FY 2022 Gov Allowance for Open Data - Funds Data Only 1-22-21.xlsx"
 first, second, third = (2020, 2021, 2022)

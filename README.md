@@ -48,6 +48,7 @@
          to the attention of the DBM SME
         * Look to see that the total number of non-null records in the three budget columns sums to the total number of 
         records in the dataframe
+        * Inspect the minimum and maximum values for numeric fields and look for unexpected values
         
 ### Step 3 - Prepare/Transform Original Data for Subsequent Processing
 * Transform Source Data
