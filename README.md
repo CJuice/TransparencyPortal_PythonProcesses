@@ -58,6 +58,7 @@
         provided in the source data. You cannot count on the DBM SME preserving source data file schema from year
         to year. Expect to make tweaks!
         * Toggle the boolean controls on the dataset of focus
+        * Toggle the boolean control for is_mid_year if the update is a mid-year update
         * Process outputs to the TransformedData folder
         
 ### Step 4 - Process Transformed Datasets
