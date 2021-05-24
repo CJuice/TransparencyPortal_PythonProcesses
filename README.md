@@ -63,6 +63,7 @@
         
 ### Step 4 - Process Transformed Datasets
 * Script - doit_operatingBudget_main.py
+    * Note: The budget_type_values_dict values upgrade in the Fall after a fiscal year closes
 * Script - doit_fundingsource_main.py
 * Script - doit_fte_main.py
 * Script - doit_cur_cr_main.py
