@@ -35,7 +35,10 @@ def main():
     full_pandas_df_printing = True
     org_code_str = "Organization Code"
     output_result_csv = fr"{myvars.processed_data_folder}/{today_str}_{data_category}_PROCESSED.csv"
-    transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
+    if myvars.is_mid_year:
+        transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.second}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
+    else:
+        transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED.xlsx"
 
     # For TESTING, smaller file size for faster testing/processing
     # transformed_data_file = fr"{myvars.transformed_data_folder}/FY{myvars.first}_{myvars.third}_{data_category}_TRANSFORMED_SLIM.xlsx"
