@@ -70,6 +70,9 @@
 
 ### Step 5 - Upload Processed Datasets to Open Data Portal as Development Assets for DBM SME Review
 * Create development level assets of the most recent update data only, for customer review
+    * Note: There should only be three type Number fields in the Budget, and CUR and CR assets.
+     The fields are Fiscal Year, Budget, and Category. All others are type text; Number type results in number
+     like codes having leading zeros removed (eg 01 becomes 1)
 * Create a data lens for the asset to help the DBM SME
 * Minimal metadata needed
 * Work with SME if issues are discovered and reprocess and re-stage data as needed
