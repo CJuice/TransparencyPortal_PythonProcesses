@@ -11,6 +11,7 @@ Revisions:
     20210112, CJuice, Refactored variables to allow easier editing each year. Also redesigned to work with output
         of previous step to enable step to step running without reconfiguring variables.
     20210201, CJuice, Filter out budget values equal to zero before writing csv.
+    20210512, CJuice, Added exception handling. FTE doesn't have a 'Budget' field to filter on, KeyError.
 """
 
 
@@ -96,9 +97,15 @@ def main():
         print(new_df.info())
 
         print("Removing Budget values equal to 0.")
-        no_zero_df = new_df[(new_df["Budget"] < 0) | (0 < new_df["Budget"])]
-        print(no_zero_df.info())
+        try:
+            no_zero_df = new_df[(new_df["Budget"] < 0) | (0 < new_df["Budget"])]
+        except KeyError as ke:
 
+            # The FTE data will not have a 'Budget' field.
+            print(f"KeyError: {ke}, Asset: {style}")
+            no_zero_df = new_df
+
+        print(no_zero_df.info())
         no_zero_df.to_csv(path_or_buf=new_concatenated_file, index=False)
 
     return
