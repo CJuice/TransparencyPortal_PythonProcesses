@@ -85,6 +85,9 @@
 
 ### Step 8 - Upload Combined Datasets to Open Data Portal as Staging Assets for DBM SME Review
 * Create staging level assets of the combined historical and update data, for customer review
+    * Note: There should only be three type Number fields in the Budget, and CUR and CR assets.
+     The fields are Fiscal Year, Budget, and Category. All others are type text; Number type results in number
+     like codes having leading zeros removed (eg 01 becomes 1)
 * Create a data lens for the asset to help the SME
 * Minimal metadata needed
 * Work with SME if issues are discovered and reprocess and restage data as needed
