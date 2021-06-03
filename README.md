@@ -125,11 +125,14 @@
     * Revise metadata
 * If using the new staged assets and moving off of existing production assets
     * Switch staging data assets from private to public
-    * Switch existing production assets to private from public
-    * Rename existing production assets to have new name such as "OLD"
-    * Rename new production assets, previously staging assets, by removing "STAGING" reference 
+    * Rename existing production assets to have new prefix of "OLD"
+    * Rename new production assets, previously staging assets, by removing "STAGING" prefix
 * Import the configurations from the approved staging sites into the existing production sites
-* Ensure site updated and then notify DBM SME
+* Ensure site updated and revise any annotations, links, etc issues that may be discovered on review
+* Explore site by clicking links, drilling down into data, etc.
+* Once you determine the site updated, switch existing production assets to private from public
+* Check site once more to make sure nothing changed when you switched the old production assets to private
+* Notify DBM SME of update and request testing and review of the updated site
 
 ### Step 13 - Testing
 * After notifying SME of production push, perform testing
